@@ -1,0 +1,38 @@
+# fn with cmdline args
+# using ++, ,(comma) oprs and $((expn)) convention
+# to print the factorials from 1 to n
+# with printf
+fact1ton() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "%6s     %9s\n"  "Number"  "Factorial"
+ printf "%6s     %9s\n"  "------"  "---------"
+ n=$1
+ for (( factn=1, p=1; $p <= $n; p++ ))
+ do
+   factn=$((factn * p))  # no spaces before or after '=' opr
+   printf "%3d      %7d\n" $p $factn
+ done
+}
+# fact1ton 10
+# output
+# Number     Factorial
+# ------     ---------
+#   1            1
+#   2            2
+#   3            6
+#   4           24
+#   5          120
+#   6          720
+#   7         5040
+#   8        40320
+#   9       362880
+#  10      3628800
+# 
+# fact1ton
+# Wrong no. of args
+# fact1ton 5 10
+# Wrong no. of args

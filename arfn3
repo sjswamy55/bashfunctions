@@ -1,0 +1,73 @@
+# fn with cmdline args
+# Usage: fn_name arysize arystgs
+# to generate an array of stgs &
+# printing them on the stdout
+# including sorted order
+# using ++ opr and 'for' loop
+arfn3() {
+ if [[ $#-1 -ne $1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ n=$1; shift
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   shift
+ done
+ for (( i=0; $i < $n; i++ ))
+ do
+ printf "Length of \"%s\" is " ${arr[$i]}
+ printf "%d\n" ${#arr[$i]}
+ done
+ echo "Array strings are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%10s" ${arr[$i]}
+ done
+ printf "\n"
+ for (( i=0; $i < $n-1; i++ ))
+ do
+  for (( j=$i+1; $j < $n; j++ ))
+  do
+   if [[ ${arr[$i]} > ${arr[$j]} ]]
+   then
+     t=${arr[$i]}
+     arr[$i]=${arr[$j]}
+     arr[$j]=$t
+   fi
+  done
+ done
+ echo "Sorted (asc) strings are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%10s" ${arr[$i]}
+ done
+ printf "\n"
+}
+# arfn3 5 "ramu" "seetha" "krishna" "rukmini" "hanuman"
+# arfn3 3 "ramu" "seetha" "krishna"
+# output
+# Length of "ramu" is 4
+# Length of "seetha" is 6
+# Length of "krishna" is 7
+# Length of "rukmini" is 7
+# Length of "hanuman" is 7
+# Array strings are:
+#       ramu    seetha   krishna   rukmini   hanuman
+# Sorted (asc) strings are:
+#    hanuman   krishna      ramu   rukmini    seetha
+# Length of "ramu" is 4
+# Length of "seetha" is 6
+# Length of "krishna" is 7
+# Array strings are:
+#       ramu    seetha   krishna
+# Sorted (asc) strings are:
+#    krishna      ramu    seetha
+# 
+# arfn3 3 "ramu" "seetha"
+# Wrong no. of elements
+# arfn3 3 "ramu" "seetha" "krishna" "rukmini"
+# Wrong no. of elements

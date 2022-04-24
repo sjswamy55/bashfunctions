@@ -1,0 +1,25 @@
+# fn with cmdline args
+# revstg fn
+revstg() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ stg=$1
+ l=`expr length "$stg"`
+ for (( n=$l; $n > 0; n-- ))
+ do
+  c1=`expr substr "$stg" $n 1`
+  printf  "$c1"
+ done
+ echo
+}
+# revstg ramesh
+# output
+# hsemar
+# 
+# revstg
+# Wrong no. of args
+# revstg ramesh krishna
+# Wrong no. of args

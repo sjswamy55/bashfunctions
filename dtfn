@@ -1,0 +1,6 @@
+dtfn() {
+ set -- `date`
+ year=`expr $6 : '..\(..\)'`
+ echo "$2 $3 $year"
+}
+dtfn

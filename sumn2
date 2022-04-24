@@ -1,0 +1,29 @@
+# fn with cmdline args
+# sum of the first 'n' natural nos
+# using let, ++ and += oprs
+sumn2() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Sum of the first $1 naturals = "
+ s=0 numb=1
+  # no spaces before or after '=' opr
+ while test $numb -le $1
+ do
+  let s+=numb  # no spaces before or
+               # after += opr
+  let numb++   # usage of 'let' is must
+              # i.e. numb++ is not valid
+ done
+ printf "$s\n"
+}
+# sumn2 5
+# output
+# Sum of the first 5 naturals = 15
+# 
+# sumn2
+# Wrong no. of args
+# sumn2 5 3
+# Wrong no. of args

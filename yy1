@@ -1,0 +1,6 @@
+  daysmonth=( 31 28 31 30 31 30 31 31 30 31 30 31 )
+  for ((i=0; $i < 12; i++))
+  do
+   printf "%3d" ${daysmonth[$i]}
+  done
+  echo

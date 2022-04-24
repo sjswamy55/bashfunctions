@@ -1,0 +1,57 @@
+# fn with cmdline args
+# to generate the primes below n(fast ver)
+# with headers (10 primes per line)
+# using ++ opr and $((expn)) convention
+# flag=1 for prime, flag=0 for nonprime
+# prime: a numb which is divisible
+# only by 1 and numb itself
+primen1() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ echo "           Primes below $1"
+ echo "           -----------------"
+ printf "%5d%5d" 2 3
+ ctr=2
+ for (( p=5; $p < $1; p=$p+2 ))
+ do
+  flag=1
+  lmt=$p/2
+  for (( divr=3; $divr <= $lmt; divr=divr+2 ))
+  do
+   if [[ $((p % divr)) == 0 ]]
+   then
+      flag=0
+      break
+   fi
+  done  # for divr
+  if [[ $flag != 0 ]]
+  then
+    printf "%5d" $p
+    ctr=$ctr+1
+  fi
+  if [[ $((ctr % 10 )) == 0 ]]
+  then
+    printf "\n"
+  fi
+ done  # for p
+ if [[ $((ctr % 10 )) != 0 ]]
+ then
+    printf "\n"
+ fi
+ 
+}
+# primen1 100
+# output
+#          Primes below 100
+#          -----------------
+#   2    3    5    7   11   13   17   19   23   29
+#  31   37   41   43   47   53   59   61   67   71
+#  73   79   83   89   97
+# 
+# primen1
+# Wrong no. of args
+# primen1 100 300
+# Wrong no. of args

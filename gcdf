@@ -1,0 +1,32 @@
+# fn with cmdline args
+gcdf() {
+ if [[ $# -ne 2 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "GCD of $1, $2 is "
+ a=$1  b=$2
+ while test $b != 0
+ do
+ # t=`expr $a % $b` also works
+  t=$((a % b))
+  a=$b
+  b=$t
+ done
+ printf "$a\n"
+}
+# gcdf 25 35
+# gcdf 625 75
+# gcdf 625 70
+# output
+# GCD of 25, 35 is 5
+# GCD of 625, 75 is 25
+# GCD of 625, 70 is 5
+# 
+# gcdf
+# Wrong no. of args
+# gcdf 25
+# Wrong no. of args
+# gcdf 25 35 75
+# Wrong no. of args

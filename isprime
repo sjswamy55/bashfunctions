@@ -1,0 +1,40 @@
+# fn with cmdline args
+# to check whether the given number
+# is prime or not
+# using $((expn)) convention
+# flag=1 for prime, flag=0 for nonprime
+# prime: a numb which is divisible
+# only by 1 and numb itself
+isprime() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+  flag=1 p=$1
+  lmt=$p/2
+  for (( divr=3; $divr <= $lmt; divr=divr+2 ))
+  do
+   if [[ $((p % divr)) == 0 ]]
+   then
+      flag=0
+      break
+   fi
+  done  # for divr
+  if [[ $flag != 0 ]]
+  then
+    printf "$p is a prime\n"
+  else
+    printf "$p is not a prime\n"
+  fi
+}
+# isprime 37
+# isprime 45
+# output
+# 37 is a prime
+# 45 is not a prime
+# 
+# isprime
+# Wrong no. of elements
+# isprime 45 57
+# Wrong no. of elements

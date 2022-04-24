@@ -1,0 +1,1071 @@
+
+  'bash' reads & executes cmds from the specified file.
+  First it looks for the file in the curr dir, and, if
+  no file is found, then it searches the dirs in PATH
+  for the script file.
+
+  When bash is invoked as login shell, it first reads &
+  executes cmds from the files /etc/profile, ~/.bash_profile,
+  ~/.bash_login, ~/.profile, in that order (if they exist).
+
+  When a login shell exits, bash reads & executes cmds from
+  the file ~/.bash_logout, if it exists.
+
+Defns
+
+  blank  A space or tab.
+
+  word   A seq of chars considered as a single unit by the shell.
+ (token)
+
+  name   A word consisting only of alphanumeric chars & _s,
+ (idfr)  & beginning with an alphabetic char or an _.
+  
+  metachar
+   A char that,when unquoted,separates words. One of the following:
+         |  & ; ( ) < > space tab
+
+  control opr
+   A token that performs a control fn. It is one of the following:
+         || & && ; ;; ( ) | |& <newline>
+
+RESERVED WORDS
+  These are words that have a spl meaning to the shell.
+  !  case   do  done  elif else esac fi for fn if in select then
+  until while { } time [[ ]]
+
+SHELL GRAMMAR
+  Simple Cmds
+  It is a seq of optnal var =ts followed by blank-separated
+  words & redirecs, & terminated by a control opr. The 1st word
+  specifies the cmd to be executed, & is passed as arg zero.
+  The remaining words are passed as args to the invoked cmd.
+
+  Pipelines
+  It is a seq of one or more cmds separated by one of the
+  control oprs | or |&.  The fmt for a pipeline is:
+
+         [time [-p]] [ ! ] cmd1 [ [|⎪|&] cmd2 ... ]
+
+  The stdout of cmd1 is connected via a pipe to the stdin of
+  cmd2.  If |& is used, the stderr of cmd1 is connected to
+  cmd2's stdin thru the pipe; it is shorthand for 2>&1 |.
+
+  If the time reserved word precedes a |, the elapsed
+  as well as user & system time consumed by its execution
+  are reported when the pipeline terminates.
+
+  Each cmd in a pipeline is executed as a separate ps(i.e.,
+  in a subshell).
+
+  Lists
+  A list is a seq of 1 or more |s separated by one of
+  the oprs  ;,  &,  &&, or ||, & optnally terminated by
+  one of ;, &, or <newline>.
+
+  Of these list oprs, && and || have equal precedence,
+  followed by ; and &, which have equal precedence.
+
+  A seq of one or more newlines may appear in a list
+  instead of a semicolon to delimit cmds.
+
+         cmd1 && cmd2
+
+  cmd2  is  executed if, & only if, cmd1 retns an exit
+  status of 0(true).
+
+         cmd1 || cmd2
+
+  cmd2 is executed if & only if cmd1 retns a non-0(false)
+  exit status.
+
+  Compound Cmds
+
+ (list)
+  list is executed in a subshell env. Var =ts & builtin
+  cmds that affect the shell's env do not remain in effect
+  after the cmd completes.
+
+ { list; }
+  list is simply executed in the curr shell env. list must
+  be terminated with a newline or ;. This is known as a
+  group cmd. The retn status is the exit status of list.
+
+ ((expn))
+  The expn is evaluated arithmetically. If the val of the
+  expn is non-0, it retns 0, else retns 1.
+  (equivalent to let "expn")
+
+ [[ expn ]]
+  Returns 0 or 1 depending on the evaluation of the
+  condnal expn 'expn'. Word splitting & pathname expan
+  are not performed on the words b/w the [[ & ]]; tilde
+  expan, par & var expan, arith expan, cmd substn, ps
+  substn, & quote removal are performed.
+  When the == & != oprs are used, the stg to the right
+  of the opr is considered a patn & matched according
+  to the rules described below under Patn Matching.
+  It retns 0 if the stg matches (==) otherwise retns 1.
+
+  An  additional binary opr, =~, is available, with the
+  same precedence as == & !=. When it is used, the stg to
+  the right of the opr is considered an extended reg expn
+  & matched accordingly. It retns 0 if the stg matches the
+  patn, & 1 otherwise. If the reg expn is incorrect, it
+  retns 2.
+
+  Expns may be combined using the following oprs, listed in
+  decreasing order of precedence:
+
+ ( expn )
+  Returns the val of expn. This may be used to override
+  the normal precedence of oprs.
+
+ ! expn
+  True if expn is false.
+
+ expn1 && expn2
+  True if both expn1 & expn2 are true.
+
+ expn1 || expn2
+  True if either expn1 or expn2 is true.
+
+ for name [ [ in [ word ... ] ] ; ] do list ; done
+  The list of words following 'in' is expanded, generating
+  a list of items. The var name is set to each elt of this
+  list in turn, & list is executed each time (default for
+  'in word' is 'in $*').
+
+ for (( expr1 ; expr2 ; expr3 )) ; do list ; done
+  Arithm. expn expr1 is evaluated arithmetically. The arith.
+  expn expr2 is then evaluated repeatedly until it evaluates
+  to 0. Each time expr2 evaluates to a non-zero val, list
+  is executed & the arith. expn expr3 is evaluated. If any
+  expn is omitted, it behaves as if it evaluates to 1. The
+  retn val is the exit status of the last cmd in list that
+  is executed, or false if any of the expns is invalid.
+
+ case word in [ [(] patn [ | patn ] ... ) list ;; ] ... esac
+  A case cmd first expands word, & tries to match it against
+  each patn in turn, using the same matching rules as for
+  pathname expan. The word is expanded using tilde expan,
+  par & var expan, arith. substn, cmd substn, ps substn &
+  quote removal. Each patn examined is expanded using tilde
+  expan, par & var expan, arith. substn, cmd substn, & ps
+  substn. When a match is found, the coring list is executed.
+  If the ;; opr is used, no subsequent matches are attempted
+  after the first patn match. Using ;& in place of ;; causes
+  execution to continue with the list associated with the
+  next set of patns. Using ;;& in place of ;; causes the
+  shell to test the next patn list in the stmt, if any, &
+  execute any associated list on a successful match.
+
+ if list; then list; [ elif list; then list; ] ...
+                                    [ else list; ] fi
+  The if list exit status is 0, the then list is executed.
+  Otherwise, each elif list is executed in turn, & if its
+  exit status is 0, the coring then list is executed & the
+  cmd completes. Otherwise, the else list is executed, if
+  present.
+
+ while list1; do list2; done
+ until list1; do list2; done
+  The while cmd continuously executes the list list2 as
+  long as the list list1 retns 0(true).
+  list2 is executed as long as the list1 retns a non-0.
+
+ Shell Fn Defns
+  A shell fn is an object that is called like a simple cmd
+  & executes a compd cmd with a new set of posnal pars.
+
+  Shell fns are declared as follows:
+
+      name () compd-cmd [redirec]
+      function name [()] compd-cmd [redirec]
+  This defines a fn named name. The reserved word function
+  is optnal. If the function reserved word is supplied, the
+  ()s are optnal. The body of the fn is the compd cmd
+  compd-cmd and it is usually a list of cmds between { & },
+  compd-cmd is executed whenever name is specified as the
+  name of a simple cmd. Any redirecs specified when a fn
+  is defined are performed when the fn is executed.
+
+COMMENTS
+  A word beginning with # causes that word & all remaining
+  chars on that line to be ignored.
+
+QUOTING
+  Quoting is used to remove the spl meaning of certain
+  chars or words to the shell.
+
+  All the metachars(inclg history expan char, usually !)
+  must be quoted in order to have their literal meaning.
+
+  There are three quoting mechanisms: the escape char (\),
+  's, & "s.
+
+  A '\' preserves the literal val of the next char that
+  follows (exception of <newline>). '\<newline>' is
+  treated as a line continuation.
+
+  Enclosing chars in 's preserves the literal val of each
+  char within the quotes. A ' may not occur b/w 's, even
+  when preceded by a '\'.
+
+  Enclosing chars in "s preserves the literal val of all
+  chars within the quotes, with the exception of $, `, \,
+  !. The chars $ and ` retain their spl meaning within "s.
+  The '\' retains its spl meaning only when followed by
+  one of $, `, ", \, or <newline> chars. A " may be quoted
+  within "s by preceding it with a '\'.
+
+  The spl pars * and @ have spl meaning when in "s.
+  Words of the form $'stg' are treated splly. The word
+  expands to stg, with '\'-escaped chars replaced
+  as specified by the ANSI C std. Backslash escape
+  seqs, if present, are decoded as follows:
+    \a     alert (bell)      \b     backspace
+    \e or \E     an escape char
+    \f     form feed         \n     new line
+    \r     carriage retn     \t     horizontal tab
+    \v     vertical tab      \\     '\'
+    \'     single quote      \"     double quote
+    \nnn   the  eight-bit char whose val is the octal
+           value nnn (one to three digits)
+
+  A var may be assigned a val as:
+     name=[val]    (default val is the null stg)
+
+  In the context where an =t stmt is assigning a val
+  to a shell var or arr index, the += opr can be used to
+  append to or add to the var's prev val. When += is
+  applied to a var for which the int attribute has been
+  set, val is evaluated as an arith. expn & added to the
+  var's curr val, which is also evaluated. When += is
+  applied to an arr var using compd =t, the
+  var's val is not unset (as it is when using =), & new
+  vals are appended to the arr beginning at one > the
+  arr's max index (for indexed arrs) or added as
+  additional key-val pairs in an associative arr. When
+  applied to a stg-vald var, value is expanded &
+  appended to the var's val.
+
+ Posnal Pars
+   $1, $2, $3, ... , ${10}, ${11}, ... ${n}
+
+ Spl Pars
+  The shell treats several pars splly. These pars may only
+  be referenced; =t to them is not allowed.
+
+  "$*" is equivalent to "$1c$2c...", where c is the 1st
+  char of the val of the IFS var. Default for IFS is space.
+
+  "$@" is equivalent to "$1" "$2" ... 
+
+  $#  The no. of posnal pars in decimal.
+
+  $?  The exit status of the most recently executed fg cmd.
+
+  $-  The curr optn flags as specified upon invocatn
+
+  $$  The ps ID of the shell. In a () subshell, it is the
+      ps ID of the curr shell, not the subshell.
+
+  $!  The ps ID of the most recently executed bg cmd.
+
+  $0  The name of the shell or shell script.
+
+ Shell Vars
+  The following vars are set by the shell:
+
+ BASH   Expands to the full file name used to invoke this
+        instance of bash.
+
+ HISTCMD
+  The history number, or index in the history list, of the
+  curr cmd. If HISTCMD is unset, it loses its spl properties,
+  even if it is subsequently reset.
+
+ HOSTNAME
+  Automatically set to the name of the curr host.
+
+ HOSTTYPE
+  Automatically set to a stg that uniquely describes the
+  type of m/c on which bash is executing. The default is
+  system-dpdt.
+
+ LINENO
+  Each time this par is referenced, the shell substitutes
+  a decimal no. of repting the curr sequential line number
+  (starting with 1) within a script or fn.
+
+ OLDPWD  The prev working dir as set by the cd cmd.
+
+ PPID  The PID of the shell's parent. This var is readonly.
+
+ PWD   The curr working dir as set by the cd cmd.
+
+ RANDOM Each time this par is referenced, a random int b/w
+        0 & 32767 is generated. The seq of random numbers
+        may be initialized by assigning a val to RANDOM.
+        If RANDOM is unset, it loses its spl properties,
+        even if it is subsequently reset.
+
+ SHLVL  Incremented by one each time an instance of bash is
+        started.
+
+ UID    Expands to the UID of the curr user, initialized at
+        shell startup. This var is readonly.
+
+  The following vars are used by the shell. In some cases,
+  bash assigns a default val to a var; these cases are
+  noted below.
+
+ CDPATH
+  The search path for the cd cmd. This is a col-septd list
+  of dirs in which the shell looks for destn dirs specified
+  by the cd cmd.
+
+ HISTFILE
+  The name of the file in which cmd history is saved (default
+  is ~/.bash_history)
+
+ HISTFILESIZE
+  The max no. of lines contained in the history file (default
+  is 500/1000)
+
+ HISTSIZE
+  The no. of cmds to remember in the cmd history(default 500)
+
+ HOME
+  The home dir of the curr user
+
+ IFS  The Internal Field Separator that is used for word
+  splitting after expan & to split lines into words with the
+  read builtin cmd. The default "<space><tab><newline>"
+
+ IGNOREEOF
+  Controls the action of an interactive shell on receipt of
+  an EOF char as the sole input. If set, the val is the no.
+  of consecutive EOF chars which must be typed as the first
+  char on an input line before bash exits. If the var exists
+  but does not have a numeric val, or has no value, the
+  default val is 10. If it does not exist, EOF signifies
+  the end of input to the shell.
+
+ MAILCHECK
+  Specifies how often (in secs) bash checks for mail. The
+  default is 60 secs.
+
+ PATH  The search path(a col-septd list of dirs) for cmds.
+
+ PS1  The primary prompt stg (default "\s-\v\$ ").
+
+ PS2  The secondary prompt stg (default "> ").
+
+ SHELL  The full pathname of the shell.
+
+ Arrays
+  Bash provides one-dim indexed & associative arr vars.
+  Any var may be used as an indexed arr; the declare
+  builtin will explicitly declare an arr. There is no
+  max limit on the size of an arr, nor any reqt that
+  members be indexed or assigned contiguously. Indexed
+  arrs are referenced using ints (inclg arith. expns)
+  & are zero-based; associative arrs are referenced
+  using arbitrary stgs. An indexed arr is created
+  automatically if any var is assigned to using the
+  syntax 'name[subscript]=val'. The subscript is treated
+  as an arith. expn that must evaluate to a number.
+  If subscript evaluates to a no. < 0, it is used as
+  an offset from one greater than the arr's max index
+  (so a subcript of -1 refers to the last elt of the
+  arr). To explicitly  declare an indexed arr,
+  use 'declare -a name'.
+
+  declare -a  name[subscript] is also accepted; the
+  subscript is ignored.
+
+  Associative arrs are created using declare -A name.
+
+  Attributes may be specified for an arr var using
+  the declare and readonly builtins. Each attribute
+  applies to all members of an arr.
+
+  Arrays are assigned to using compd =ts of the form
+  name=(val1 ...  valn), where each value is of the
+  form [subscript]=stg.
+  Indexed arr =ts do not require the bracket & subscript.
+  When  assigning to indexed arrs, if the optnal brackets
+  & subscript are supplied, that index is assigned to;
+  otherwise the index of the elt assigned is the last
+  index assigned to by the stmt plus one.  Indexing
+  starts at zero.
+
+  When assigning to an associative arr, the subscript
+  is required.
+
+  This syntax is also accepted by the declare builtin.
+  Individual arr elts  may be assigned to using the
+  name[subscript]=val syntax.
+
+  Any elt of an arr may be referenced using
+  ${name[subscript]}.   The braces are required to
+  avoid conflicts with pathname expan.
+  If subscript is @ or *, the word expands to all
+  members of name.  These  subscripts differ only
+  when the word appears within "s.  If the word is
+  double-quoted, ${name[*]} expands to a single
+  word with the  val of each arr member separated
+  by the first char of the IFS spl var, & ${name[@]}
+  expands each elt of name to a separate  word.
+  When  there  are  no arr members, ${name[@]}
+  expands to nothing.
+  If the double-quoted expan occurs within a word,
+  the expan of the first par is joined with the
+  beginning part of the original word, & the
+  expan of the last par is joined with the last
+  part of the original word.  This is analogous
+  to the expan of the spl pars * and @.
+  ${#name[subscript]} expands to  the length
+  of  ${name[subscript]}. If subscript is * or
+  @, the expan is the no. of elts in the arr.
+  Referencing an arr var without a subscript is
+  equivalent to referencing the arr with a
+  subscript of 0.
+
+  An arr var is considered set if a subscript
+  has been assigned  a val.  The null stg is a
+  valid value.
+
+  The unset builtin is used to destroy arrs.
+    unset name[subscript]
+  destroys the arr elt at index subscript. Care
+  must be taken to avoid unwanted side effects
+  caused by pathname expan.  unset name, where
+  name is an arr, or unset name[subscript],
+  where subscript is *  or @, removes the
+  entire arr.
+
+  The declare, local, & readonly builtins each
+  accept a -a optn to specify an indexed arr &
+  a -A optn to specify an associative arr.  If
+  both optns are supplied, -A takes precedence.
+  The read builtin accepts a -a optn to assign
+  a list of words read from the stdin  to  an
+  arr. The  set  & declare builtins display arr
+  vals in a way that allows them to be reused
+  as =ts.  
+
+EXPANSION
+  Expansion is performed on the cmd line after it
+  has been split into words. There are seven kinds
+  of expan performed: brace expan, tilde expan, par
+  & var expan,  cmd  substn, arith. expan, word 
+  splitting, & pathname expan.
+
+  The order of expans is: brace expan, tilde expan,
+  par, var & arith. expan and cmd substn (done in
+  a left-to-right fashion), word splitting, &
+  pathname expan.
+
+  Only brace expan, word splitting, & pathname
+  expan can change the no. of words of the expan;
+  other expans expand a single word to a single
+  word. The only exceptions to this are the expans
+  of "$@" & "${name[@]}"
+
+ Brace Expansion
+  Brace expan is a mechanism by which arbitrary
+  stgs may be generated. This mechanism is similar
+  to pathname expan, but the flnames generated
+  need not exist.  Patns to be brace expanded take
+  the form of an optnal preamble, followed by either
+  a series of comma-separated stgs or a seq expn
+  b/w a pair of braces, followed by an optnal
+  postscript.  The preamble is prefixed to  each
+  stg  contained within  the braces, & the
+  postscript is then appended to each resulting
+  stg, expanding left to right.
+
+  Brace expans may be nested. The results of each
+  expanded stg are not  sorted;  left  to  right
+  order is preserved.  For example, a{d,c,b}e
+  expands into 'ade ace abe'.
+
+  A seq expn takes the form {x..y[..incr]}, where
+  x  &  y  are either ints or single chars, & incr,
+  an optnal increment, is an int. When ints are
+  supplied, the expn expands to each no. of
+  b/w x & y, inclusive.  Supplied ints may be
+  prefixed with 0 to force each term to have the
+  same width. When either x or y begins with a 0,
+  the shell attempts to force all generated terms
+  to contain the same no. of digits, zero-padding
+  where necessary. When chars are supplied, the
+  expn expands to each char lexicographically
+  b/w x & y, inclusive. Note that both x and y
+  must be of the same type. When the increment
+  is  supplied, it is used as the difference b/w
+  each term. The default increment is 1 or -1 as
+  appropriate.
+
+  A correctly-formed brace expan must contain
+  unquoted opening & closing braces, & at least
+  one unquoted comma or a valid seq expn.
+  Any incorrectly formed brace expan is left
+  unchanged.  A { or , may be quoted with a '\'
+  to prevent its being considered part  of  a
+  brace expn. To avoid conflicts with par expan,
+  the stg ${ is not considered eligible for
+  brace expan.
+
+ mkdir /usr/local/src/bash/{old,new,dist,bugs}
+  or
+ chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}}
+
+ Parameter Expansion
+  The '$' char introduces par expan, cmd substn,
+  or arith. expan. The par name or symbol to be
+  expanded may be enclosed in braces, which are
+  optnal but serve to protect the var to be
+  expanded from chars immediately following it
+  which could be interpreted as part of the name.
+
+  When braces are used, the matching ending brace
+  is the first '}' not escaped by a '\' or within
+  a quoted stg, & not within an embedded arith.
+  expan, cmd substn, or par expan.
+
+  ${#par}
+   Parameter length.  The length in chars of the val
+   of par is substituted. If par is * or @, the val
+   substituted is the no. of posnal pars. If par is
+   an arr name subscripted by * or @, the val
+   substituted is the no. of elts in the arr.
+
+  ${par#word}
+  ${par##word}
+   Remove matching prefix patn. The word is expanded to
+   produce a patn just as in pathname expan. If the
+   patn matches the beginning  of the val of par, then
+   the result of the expan is the expanded val of par
+   with the shortest matching patn (the '#' case)  or
+   the longest matching patn (the '##' case) deleted.
+   If par is @ or *, the patn removal opn  is
+   applied to each posnal par in turn, & the expan is
+   the resultant list. If par is an arr var subscripted
+   with  @ or *, the patn removal opn is applied
+   to each member of the arr in turn, & the expan is
+   the resultant list.
+
+  ${par%word}
+  ${par%%word}
+   Remove matching suffix patn. The word is expanded
+   to produce a patn just as in pathname expan. If the
+   patn matches a trailing  portion  of  the  expanded
+   val of par, then the result of the expan is the
+   expanded val of par with the shortest matching
+   patn (the '%' case) or the longest matching patn
+   (the '%%' case) deleted. If par is  @  or  *,  the
+   patn removal opn is applied to each posnal
+   par in turn, & the expan is the resultant list. If
+   par is an arr var subscripted with @ or *, the patn
+   removal opn is applied to each member of the arr in
+   turn, & the expan is the resultant list.
+
+  Cmd Substitution
+  There are two forms:
+
+         $(cmd)
+     or
+         `cmd`
+
+  Bash performs the expan by executing cmd & replacing the cmd
+  substn  with  the  stdout of the cmd, with any trailing
+  newlines deleted.  Embedded newlines are not  deleted,  but
+  they may be removed  during  word splitting. The cmd substn
+  $(cat file) can be replaced by the equivalent but
+  faster $(< file).
+
+  When the old-style backquote form of substn  is  used, '\'
+  retains its literal meaning except when followed by $, `,
+  or \.  The first \ not preceded by a '\' terminates the
+  cmd substn. When  using the $(cmd) form, all chars b/w the
+  parentheses make up the cmd; none are treated splly.
+
+  Cmd substns may be nested. To nest when  using  the
+  backquoted form, escape the inner backquotes with '\'es.
+
+  If the substn appears within "s, word splitting & path‐
+  name expan are not performed on the results.
+
+ Arithmetic Expansion
+  Arith. expan allows the evaluation of an arith. expn and
+  the substn of the result.  The fmt for arith. expan is:
+
+         $((expn))
+
+  The old fmt $[expn] is deprecated & will be removed in
+  upcoming vers of bash.
+
+  The expn is treated as if it were within "s, but a "
+  inside the parentheses is not treated splly. All
+  tokens in the expn undergo par expan, stg expan, cmd
+  substitution, & quote removal. Arithmetic expans may
+  be nested.
+
+  The evaluation is performed arithmetically.
+
+ Word Splitting
+  The shell scans the results of par expan, cmd substn,
+  & arith. expan that did not occur within "s for word
+  splitting.
+
+  The shell treats each char of IFS as a delimiter, &
+  splits the results of the other expans into words on
+  these chars.
+
+ Pathname Expansion
+  After word splitting, unless the -f optn has been set,
+  bash scans each word for the chars *, ?, & [.  If one
+  of these chars appears, then the  word is regarded as
+  a patn, & replaced with an alphabetically sorted list
+  of file names matching the patn.
+
+ Patn Matching
+  Any char that appears in a patn, other than the
+  spl patn chars described below, matches  itself.
+  The NUL char may not occur in a patn.  A '\'
+  escapes the following  char;  the escaping '\'
+  is discarded when matching. The spl patn chars
+  must be quoted if they are to be matched literally.
+
+  The spl patn chars have the following meanings:
+
+   *      Matches any stg, including the null stg.
+
+   ?      Matches any single char.
+
+   [...]  Matches any one of the enclosed chars.
+          A pair of chars separated by a hyphen
+          denotes a range expn. char following the
+          [ is a !  or a ^ then any char not enclosed
+          is matched. A - may be matched by including
+          it as the 1st or last char in the set. A ]
+          may be matched by including it as the 1st
+          char in the set.
+
+          Within [ & ], char classes can be specified
+          using the syntax [:class:], where class
+          is one of the following classes
+             alnum alpha ascii blank cntrl digit
+             graph lower print  punct space upper
+             word xdigit
+          A char class matches any char belonging
+          to that class. The word char class matches
+          letters,  digits, & the char _.
+
+ Quote Removal
+  After the preceding expans, all unquoted occurrences
+  of the chars \, ', & " that did not result from one
+  of the above expans are removed.
+Ex:
+  (1)    ls > dirlist 2>&1
+      directs both stdout & stderr to the file dirlist.
+
+  (2)    ls 2>&1 > dirlist
+      directs only the stdout to file dirlist, because
+      the stderr was duplicated from the stdout before
+      the std output was redirected to dirlist.
+
+ Here Documents
+  This type of redirecn instructs the shell to read
+  input from the curr source until a line containing
+  only delimiter (with no trailing blanks) is seen.
+  All of the lines read up to that pt are then used
+  as the stdin for a cmd.
+
+ The fmt of here-documents is:
+
+         <<[-]word
+                 here-document
+         delimiter
+
+  If word is unquoted, all lines of the here-document 
+  are subjected to par expan, cmd substn, & arith.
+  expan.  In the latter case, the char seq
+  \<newline> is ignored, & \ must be used to
+  quote the chars \, $, & `.
+
+  If the redirecn opr is <<-, then all leading tab
+  chars are stripped from input lines & the line
+  containing delimiter. This allows here-documents
+  within shell scripts to be indented in a natural
+  fashion.
+
+ Here Strings
+  A variant of here documents, the fmt is:
+
+         <<<word
+
+  The word is expanded & supplied to the cmd on
+  its stdin.
+
+ Duplicating File Descriptors
+  The redirn opr
+
+         [n]<&word
+
+  is used to duplicate input file drs. If word
+  expands to one or more digits, the file dr
+  denoted by n is made to be a copy of that file
+  dr.  If the digits in word do not specify a
+  file dr open for input, a redirec err occurs.
+  If word evaluates to -,  file dr n is closed.
+  If n is not specified, the stdin (file dr 0)
+  is used.
+
+  The opr
+
+         [n]>&word
+
+  is used similarly to duplicate output file drs.
+  If n is not specified, the stdout (file dr 1) is
+  used.  If the digits in word do not specify a
+  file dr open for output, a redirec err occurs.
+  As a spl case, if n is omitted, & word does not
+  expand to one or more digits, the stdout &
+  stderr are redirected as described prevly.
+
+  Aliases are created & listed with the alias
+  cmd, and removed with the unalias cmd.
+
+  For almost every purpose, aliases are
+  superseded by shell fns.
+
+Arithmetic Evaluation
+  The oprs & their precedence, associativity, and
+  vals are the same as in the C language. The
+  following list of oprs is grouped into levels of
+  equal-precedence oprs. The levels are listed
+  in order of decreasing precedence.
+
+  idfr++ idfr--     var post-inc & post-decrement
+  ++idfr --idfr     var pre-inc & pre-decrement
+  - +               unary minus & plus
+  ! ~               logical & bitwise negation
+  **                exponentiation
+  * / %             multiplication, division, remainder
+  + -               addition, subtraction
+  << >>             left & right bitwise shifts
+  <= >= < >         comparison
+  == !=             equality & inequality
+  &                 bitwise AND
+  ^                 bitwise exclusive OR
+  |                 bitwise OR
+  &&                logical AND
+  ||                logical OR
+  expr?expr:expr    ?: (conditional opr)
+  = *= /= %= += -= <<= >>= &= ^= |=    (=ts)
+  expr1 , expr2                        (comma)
+
+  Shell vars are allowed as operands.
+  Within an expn, shell vars may also be referenced
+  by name without using the par expan syntax. A shell
+  var that is null or unset evaluates to 0 when
+  referenced by name without using the par expan
+  syntax. The val of a var is evaluated as an arith.
+  expn when it is referenced, or when a var which
+  has been given the int attribute using declare -i
+  is assigned a val.  A null value evaluates to 0.
+  A shell var need not have its int attribute
+  turned on to be used in an expn.
+
+  Consts with a leading 0 are interpreted as octal
+  numbers. A leading 0x or 0X denotes  hexadecimal.
+  Otherwise, numbers take the form [base#]n, where
+  the optnal base is a decimal no. of b/w 2 & 64
+  repting the arith. base, & n is a no. in that
+  base. If base# is omitted, then base 10 is used.
+  The digits > 9 are repted by the lcase letters,
+  the ucase letters, @, & _, in that order.
+  If base is <= 36, lcase & ucase letters may be
+  used interchangeably to rept numbers b/w 10 & 35.
+
+CONDITIONAL EXPRESSIONS
+  Conditional expns are used by the [[ compd cmd
+  and the  test and [  builtin cmds to test file
+  attributes and perform stg & arith. comparisons.
+  Expressions are formed from the following unary
+  or binary primaries.
+
+    -a file
+       True if file exists.
+
+    -b file
+       True if file exists & is a block spl file.
+
+    -c file
+       True if file exists & is a char spl file.
+
+    -d file
+       True if file exists & is a dir.
+
+    -e file
+       True if file exists.
+
+    -f file
+       True if file exists & is a reg file.
+
+    -g file
+       True if file exists & is set-group-id.
+
+    -h file
+       True if file exists & is a symbolic link.
+
+    -k file
+       True if file exists & its 'sticky' bit is set.
+
+    -p file
+       True if file exists & is a named pipe (FIFO).
+
+    -r file
+       True if file exists & is readable.
+
+    -s file
+       True if file exists & has a size > zero.
+
+    -u file
+       True if file exists & its set-user-id bit is set.
+
+    -w file
+       True if file exists & is writable.
+
+    -x file
+       True if file exists & is executable.
+
+    -G file
+       True if file exists & is owned by the effective
+       gid.
+
+    -L file
+       True if file exists & is a symbolic link.
+
+    -N file
+       True if file exists & has been modified since it
+       was last read.
+
+    -O file
+       True if file exists & is owned by the effective uid.
+
+    file1 -ef file2
+       True if file1 & file2 refer to the same
+       device and inode numbers.
+
+    file1 -nt file2
+       True if file1 is newer (w.r.t. to modifn
+       date) than file2, or if file1 exists & file2
+       does not.
+
+    file1 -ot file2
+       True if file1 is older than file2, or if file2
+       exists & file1 does not.
+
+    -z stg
+       True if the length of stg is zero.
+
+    stg
+    -n stg
+       True if the length of stg is non-zero.
+  
+    stg1 == stg2
+    stg1 = stg2
+       True if the stgs are equal. = should be used
+       with the test cmd for POSIX conformance.
+  
+    stg1 != stg2
+       True if the stgs are not equal.
+  
+    stg1 < stg2
+       True if stg1 sorts before stg2 lexicographically.
+  
+    stg1 > stg2
+       True if stg1 sorts after stg2 lexicographically.
+  
+    arg1 OP arg2
+       OP is one of  -eq, -ne, -lt, -le, -gt, or -ge.
+       These arith. binary oprs retn true if arg1 is equal
+       to,  not equal to, less than, less than or equal to,
+       greater than, or greater than or equal to arg2,
+       respectively.  Arg1 & arg2 may be +ve or
+       ‐ve ints.
+
+JOB CONTROL
+  Job control refers to the ability to selectively
+  stop (suspend) the execution of pses & continue
+  (resume) their execution at a later pt.
+  A user typically employs this facility via an
+  interactive interface supplied jointly by the
+  operating system kernel's terminal driver & bash.
+
+  The shell associates a job with each pipeline.
+  It keeps a table of currently executing jobs,
+  which may be listed with the 'jobs' cmd. When
+  bash starts a job asynchronously (in the bg),
+  it prints a line that looks like:
+
+         [1] 25047
+
+  indicating that this job is job no. of 1 & that
+  the ps ID of the last ps in the pipeline associated
+  with this job is 25047. All of the pses in a single
+  pipeline are members of the same job.  Bash uses
+  the job abstraction as the basis for job control.
+
+ continue [n]
+   Resume the next iteration of the enclosing
+   for,  while,  until,  or select loop. If n
+   is specified, resume at the nth enclosing loop.
+   n must be ≥ 1. If n > the no. of enclosing
+   loops, the last enclosing loop (the
+   'top-level' loop) is resumed.  The retn
+   val is 0 unless n is not <= 1.
+
+ exit [n]
+   Cause the shell to exit with a status of n.
+   If n is omitted, the exit status is that
+   of the last cmd executed.
+
+ printf fmt [args]
+   Write the fmtted args to the stdout under the control
+   of the fmt.
+
+   The fmt is a char stg which contains three types
+   of objects: plain chars, which are simply copied
+   to stdout, char escape seqs, which are converted
+   & copied to the stdout, & fmt specificns, each
+   of which causes printing of the next successive
+   arg. In addition to the std printf(1) fmt
+   specificns, printf interprets the following
+   extensions:
+
+ readonly [-aAf] [name[=word] ...]
+   The given names are marked readonly; the vals of
+   these names may not be changed by subsequent =t.
+   If the -f optn is supplied, the fns coring to the
+   names are so marked. The -a optn restricts the
+   vars to indexed arrs; the -A optn restricts the
+   vars to associative arrs. If both optns are
+   supplied,  -A takes precedence.
+
+ shift [n]
+   The posnal pars from n+1 ... are renamed to $1 ....
+
+ test expr
+ [ expr ]
+   Return a status of 0 or 1 depending on the evaluation
+   of the condnal expn expr. Each opr & operand must be
+   a separate arg.
+   Expns may be combined using the following oprs,
+   listed in decreasing order of precedence. The
+   evaluation depends on the no. of args; see below.
+   Opr precedence is used when there are five or
+   more args.
+ ! expr   True if expr is false.
+ ( expr )
+          Returns the val of expr. This may be used
+          to override the normal precedence of oprs.
+ expr1 -a expr2
+          True if both expr1 & expr2 are true.
+ expr1 -o expr2
+          True if either expr1 or expr2 is true.
+
+   test  &  [  evaluate conditional expns using a set
+   of rules based on the no. of args.
+
+ 0 args
+         The expn is false.
+ 1 arg
+       The expn is true if & only if the arg
+       is not null.
+ 2 args
+       If the first arg is !, the expn is true
+       if and only if the sec arg is null. If
+       the first arg is one of the unary condnal
+       oprs listed above under CONDITIONAL EXPNS,
+       the expn is true if the unary test is true.
+       If the first arg is not a valid unary condnal
+       opr, the expn is false.
+ 3 args
+       The following conditions are applied in the
+       order listed. If the sec arg is one of the
+       binary condnal oprs listed above under CONDNAL
+       EXPNS, the result of the expn is the result of
+       the binary test using the first & third args
+       as operands. The -a and -o  oprs are considered
+       binary oprs when there are three args. If the
+       first arg is !, the val is the negation of the
+       two-arg test using the sec and third args. If
+       the first arg is exactly ( & the third arg is
+       exactly ), the result is the one-arg test of
+       the sec arg. Otherwise, the expn is false.
+ 4 args
+       If the first arg is !, the result is the
+       negation of the three-arg expn composed of
+       the remaining args. Otherwise, the expn is
+       parsed & evaluated according to precedence
+       using the rules listed above.
+ 5 or more args
+       The expn is parsed & evaluated according
+       to precedence using the rules listed above.
+
+   When used with test or [, the < & > oprs sort
+   lexicographically using ASCII ordering.
+
+ times
+   Print the accumulated user & system times for
+   the shell and for pses run from the shell. The
+   retn status is 0.
+
+ ulimit [-a [limit]]
+  Provides control over the resources available to the
+  shell & to pses started by it, on systems that allow
+  such control.
+  -a  All curr limits are reported
+
+ umask [mode]
+   The  user file-creation mask is set to mode.
+   begins with a digit, it is interpreted as an octal
+   no.; otherwise it is interpreted as a symbolic mode
+   mask similar to that accepted by chmod(1).
+
+ unalias [-a] [name ...]
+   Remove each name from the list of defined aliases.
+   If -a is supplied, all alias defns are removed.
+   The retn val is true unless a supplied name is
+   not a defined alias.
+
+FILES
+ /bin/bash
+   The bash executable
+ /etc/profile
+   The systemwide initialization file, executed for login shells
+ /etc/bash.bashrc
+   The systemwide per-interactive-shell startup file
+ /etc/bash.bash.logout
+   The systemwide login shell cleanup file, executed when
+   a login shell exits
+ ~/.bash_profile
+   The personal initialization file, executed for login shells
+ ~/.bashrc
+   The individual per-interactive-shell startup file
+ ~/.bash_logout
+   The individual login shell cleanup file, executed when
+   a login shell exits
+ ~/.inputrc
+   Individual readline initialization file
+
+ Shell builtin cmds & fns are not stoppable/restartable.
+
+ Array vars may not (yet) be exported.

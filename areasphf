@@ -1,0 +1,32 @@
+# fn with cmdline args
+# usage: fn_name float
+# to print the area & volume of a sphere
+# of given radius
+# vol = 4/3 PI r**3 and area = 4 PI r*r
+areasphf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ PI=3.1415 r=$1
+# area=$((radius * radius * PI))
+ volume=`echo "4*$PI*$r^3/3" | bc`
+ area=`echo "4*$PI*$r*$r" | bc`
+ printf "Area of sphere with radius $r is "
+ printf "%4.2f\n" $area
+ printf "Volume of sphere with "
+ printf "radius $r is "
+ printf "%4.2f\n" $volume
+}
+# areasphf 5.5
+# areasphf 3.5
+# areasphf 5.5 3.5
+# areasphf
+# output
+# Area of sphere with radius 5.5 is 380.12
+# Volume of sphere with radius 5.5 is 696.00
+# Area of sphere with radius 3.5 is 153.93
+# Volume of sphere with radius 3.5 is 179.00
+# Wrong no. of elements
+# Wrong no. of elements

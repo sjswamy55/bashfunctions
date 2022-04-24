@@ -1,0 +1,30 @@
+# fn with cmdline args
+# sum of even & odd numbers
+# using let, ++ and += oprs
+eoddsum() {
+ if [[ $# -eq 0 ]]
+ then
+   printf "No args are given\n" 
+   return
+ fi
+ esum=0 osum=0
+ while test $1
+ do
+  if test `expr $1 % 2` -eq 0
+  then
+    let esum+=$1
+  else
+    let osum+=$1
+  fi
+  shift
+ done
+ printf "Sum of even numbers is $esum\n"
+ printf "Sum of odd numbers is $osum\n"
+}
+# eoddsum 5 24 3 27 10 15
+# output
+# Sum of even numbers is 34
+# Sum of odd numbers is 50
+# 
+#  eoddsum
+# No args are given

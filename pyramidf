@@ -1,0 +1,46 @@
+# pyramid triangle fn with cmdline args
+# usage: fn_name int
+# to print a pyramid of numbers
+# for a given numb
+pyramidf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ n=$1
+ printf "\n"
+# The printing repeated n times
+ for((i=1; $i <= $n; i++))
+ do
+  for((j=1; $j <= $((n-i)); j++))
+  do
+   printf "  " # prints leading spaces
+  done
+  for((k=1; $k <= $i; k++))
+  do
+   printf "%1d " $k
+  done
+# prints the numbs in asc order
+  for((k=$((i-1)); $k > 0; k--))
+  do
+   printf "%1d " $k
+  done
+# prints the numbs in dsc order
+ printf "\n"
+ done
+}
+pyramidf 7
+pyramidf 7 9
+pyramidf
+# output:
+# Enter the no. to form a pyramid: 7
+#             1 
+#           1 2 1 
+#         1 2 3 2 1 
+#       1 2 3 4 3 2 1 
+#     1 2 3 4 5 4 3 2 1 
+#   1 2 3 4 5 6 5 4 3 2 1 
+# 1 2 3 4 5 6 7 6 5 4 3 2 1 
+# Wrong no. of elements
+# Wrong no. of elements

@@ -1,0 +1,628 @@
+# to generate an array of numbers and
+# printing them on the stdout
+# using ++ opr and 'for' loop
+# each input value to be given in a
+# separate line, as $IFS value is newline
+declare -a arr[5]
+echo "Enter 5 ints:"
+for (( i=0; $i < 5; i++ ))
+do
+  read arr[$i]
+done
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+# output
+# Enter 5 ints:
+# 25
+# 45
+# 35
+# 77
+# 99
+# Array numbers are:
+#  25   45   35   77   99
+
+# to generate an array of numbers and
+# printing them on the stdout
+# both in original order and reverse order
+# input from stdin or from a file but one value
+# per line, as $IFS value is newline
+declare -a arr[5]
+echo "Enter 5 ints:"
+for (( i=0; $i < 5; i++ ))
+do
+  read arr[$i]
+done
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+echo "Array numbers in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+# output
+# Enter 5 ints:
+# 25
+# 45
+# 35
+# 77
+# 99
+# Array numbers are:
+#  25   45   35   77   99
+# Array numbers in reverse order are:
+#  99   77   35   45   25
+
+# An array is initialized with numbers and
+# printing them on the stdout both in
+# in original order and reverse order
+declare -a arr=(25 45 35 77 99)
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+echo "Array numbers in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+# output
+# Array numbers are:
+#  25   45   35   77   99
+# Array numbers in reverse order are:
+#  99   77   35   45   25
+
+# An array is initialized with numbers and
+# printing them on the stdout both in
+# in original order and reverse order
+declare -a arr=(25.5 45.5 35.5 77.5 99.5)
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5.1f" ${arr[$i]}
+done
+printf "\n"
+echo "Array numbers in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5.1f" ${arr[$i]}
+done
+printf "\n"
+# output
+# Array numbers are:
+# 25.5 45.5 35.5 77.5 99.5
+# Array numbers in reverse order are:
+# 99.5 77.5 35.5 45.5 25.5
+
+# to generate an array of numbers and
+# printing them on the stdout
+# both in original order and reverse order
+# input from stdin or from a file but one value
+# per line, as $IFS value is newline
+declare -a arr[5]
+echo "Enter 5 floats:"
+for (( i=0; $i < 5; i++ ))
+do
+  read arr[$i]
+done
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5.1f" ${arr[$i]}
+done
+printf "\n"
+echo "Array numbers in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5.1f" ${arr[$i]}
+done
+printf "\n"
+# output  (input is given from a file)
+# Enter 5 floats:
+# Array numbers are:
+#  25.5 45.5 35.5 77.5 99.5
+# Array numbers in reverse order are:
+#  99.5 77.5 35.5 45.5 25.5
+
+# to generate an array of strings and
+# printing them on the stdout
+# input from stdin or from a file but one value
+# per line, as $IFS value is newline
+declare -a arr=("ramu" "seetha" "krishna" "rukmini" "vishnu")
+# echo "Enter 5 floats:"
+# for (( i=0; $i < 5; i++ ))
+# do
+#   read arr[$i]
+# done
+echo "Strings are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+echo "Strings in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+# output
+# Strings are:
+#       ramu    seetha   krishna   rukmini    vishnu
+# Strings in reverse order are:
+#     vishnu   rukmini   krishna    seetha      ramu
+
+# reading an array of strings from a file and
+# printing them on the stdout both in
+# original order and reverse order
+ declare -a arr[5]
+ echo "Enter 5 strings:"
+ for (( i=0; $i < 5; i++ ))
+ do
+   read arr[$i]
+ done
+echo "Strings are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+echo "Strings in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+# output
+# Enter 5 strings: (input is from a file, one string per line,
+#                    like "ramu" etc.)
+# Strings are:
+#     "ramu"  "seetha" "krishna" "rukmini"  "vishnu"
+# Strings in reverse order are:
+#   "vishnu" "rukmini" "krishna"  "seetha"    "ramu"
+
+# reading an array of strings (without "s)
+# from a file and printing them on the stdout
+# both in original order and reverse order
+ declare -a arr[5]
+ echo "Enter 5 strings:"
+ for (( i=0; $i < 5; i++ ))
+ do
+   read arr[$i]
+ done
+echo "Strings are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+echo "Strings in reverse order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+# output
+# Enter 5 strings: (input is from a file, one string
+#                   per line, like ramu etc.)
+# Strings are:
+#       ramu    seetha   krishna   rukmini    vishnu
+# Strings in reverse order are:
+#     vishnu   rukmini   krishna    seetha      ramu
+
+# fast version
+# using ++, ,(comma) , **(power) oprs and $((expn)) convention
+# to print the sum of the squares of the 1st n naturals
+echo -e "Enter n value: \c"
+read n
+for (( numb=1, sum=0; $numb <= $n; numb++ ))
+do
+  sum=$((sum + numb**2))  # no spaces before or after '=' opr
+done
+echo "Sum of the squares of the first $n naturals=$sum"
+# output
+# Enter n value: 10
+# Sum of the squares of the first 10 naturals=385
+
+# using ++, ,(comma) oprs and $((expn)) convention
+# to print the factorials from 1 to 10
+# with printf
+printf "%6s     %9s\n"  "Number"  "Factorial"
+printf "%6s     %9s\n"  "------"  "---------"
+for (( factn=1, n=1; $n <= 10; n++ ))
+do
+  factn=$((factn * n))  # no spaces before or after '=' opr
+  printf "%3d      %7d\n" $n $factn
+done
+# output
+# Number     Factorial
+# ------     ---------
+#   1            1
+#   2            2
+#   3            6
+#   4           24
+#   5          120
+#   6          720
+#   7         5040
+#   8        40320
+#   9       362880
+#  10      3628800
+
+# using ++ opr and $((expn)) convention
+# to print the 1 to 5 digits triangle
+echo "1 to 5 digits equilateral triangle"
+for (( a=1; $a < 6; a++ ))
+do
+  for (( c=4; $c >= $a; c-- ))
+  do
+    echo -e " \c"
+  done
+  for (( b=1; $b <= $a; b++ ))
+  do
+    echo -e "$a \c"
+  done
+  echo
+done
+# output
+# 1 to 5 digits equilateral triangle
+#     1 
+#    2 2 
+#   3 3 3 
+#  4 4 4 4 
+# 5 5 5 5 5 
+
+# using ++ opr and $((expn)) and [[ ]] conventions
+# with headings
+# to print the mathematical tables from 1 to 10 
+# in 3-columns
+echo "mathematical tables from 1 to 10"
+echo "--------------------------------"
+echo
+for (( a=1, b=2, c=3; $a <= 10; a=$a+3, b=$b+3, c=$c+3 ))
+do
+  if [[ $a == 10 ]]
+  then
+     echo " Table $a"
+     echo " --------"
+  else
+     echo " Table $a      Table $b       Table $c"
+     echo " --------     --------      --------"
+  fi
+  for (( i=1; $i <= 10; i++ ))
+  do
+    if [[ $a == 10 ]]
+    then
+       echo "$a x $i = $((a * i))"
+    else
+       echo -e "$a x $i = $((a * i))    \c"
+       echo -e "$b x $i = $((b * i))    \c"
+       echo  "$c x $i = $((c * i))"
+    fi
+  done
+  echo
+done
+# output
+# mathematical tables from 1 to 10
+# 
+#  Table 1      Table 2       Table 3
+#  --------     --------      --------
+# 1 x 1 = 1    2 x 1 = 2    3 x 1 = 3
+# 1 x 2 = 2    2 x 2 = 4    3 x 2 = 6
+# 1 x 3 = 3    2 x 3 = 6    3 x 3 = 9
+# 1 x 4 = 4    2 x 4 = 8    3 x 4 = 12
+# 1 x 5 = 5    2 x 5 = 10    3 x 5 = 15
+# 1 x 6 = 6    2 x 6 = 12    3 x 6 = 18
+# 1 x 7 = 7    2 x 7 = 14    3 x 7 = 21
+# 1 x 8 = 8    2 x 8 = 16    3 x 8 = 24
+# 1 x 9 = 9    2 x 9 = 18    3 x 9 = 27
+# 1 x 10 = 10    2 x 10 = 20    3 x 10 = 30
+# 
+#  Table 4      Table 5       Table 6
+#  --------     --------      --------
+# 4 x 1 = 4    5 x 1 = 5    6 x 1 = 6
+# 4 x 2 = 8    5 x 2 = 10    6 x 2 = 12
+# 4 x 3 = 12    5 x 3 = 15    6 x 3 = 18
+# 4 x 4 = 16    5 x 4 = 20    6 x 4 = 24
+# 4 x 5 = 20    5 x 5 = 25    6 x 5 = 30
+# 4 x 6 = 24    5 x 6 = 30    6 x 6 = 36
+# 4 x 7 = 28    5 x 7 = 35    6 x 7 = 42
+# 4 x 8 = 32    5 x 8 = 40    6 x 8 = 48
+# 4 x 9 = 36    5 x 9 = 45    6 x 9 = 54
+# 4 x 10 = 40    5 x 10 = 50    6 x 10 = 60
+# 
+#  Table 7      Table 8       Table 9
+#  --------     --------      --------
+# 7 x 1 = 7    8 x 1 = 8    9 x 1 = 9
+# 7 x 2 = 14    8 x 2 = 16    9 x 2 = 18
+# 7 x 3 = 21    8 x 3 = 24    9 x 3 = 27
+# 7 x 4 = 28    8 x 4 = 32    9 x 4 = 36
+# 7 x 5 = 35    8 x 5 = 40    9 x 5 = 45
+# 7 x 6 = 42    8 x 6 = 48    9 x 6 = 54
+# 7 x 7 = 49    8 x 7 = 56    9 x 7 = 63
+# 7 x 8 = 56    8 x 8 = 64    9 x 8 = 72
+# 7 x 9 = 63    8 x 9 = 72    9 x 9 = 81
+# 7 x 10 = 70    8 x 10 = 80    9 x 10 = 90
+# 
+#  Table 10
+#  --------
+# 10 x 1 = 10
+# 10 x 2 = 20
+# 10 x 3 = 30
+# 10 x 4 = 40
+# 10 x 5 = 50
+# 10 x 6 = 60
+# 10 x 7 = 70
+# 10 x 8 = 80
+# 10 x 9 = 90
+# 10 x 10 = 100
+# 
+
+# using ++ opr and $((expn)) and [[ ]] conventions
+# with headings
+# to print the mathematical tables from 1 to 10 
+# in 3-columns
+echo "    mathematical tables from 1 to 10"
+echo "    --------------------------------"
+echo
+for (( a=1, b=2, c=3; $a <= 10; a=$a+3, b=$b+3, c=$c+3 ))
+do
+  if [[ $a == 10 ]]
+  then
+     printf "%7s%3d\n" "Table" $a
+     printf "%11s\n" " -----------"
+  else
+     printf " %7s%2d %13s%2d %13s%2d\n" "Table" $a "Table" $b "Table" $c
+     printf "%s\n" " -----------     -----------     -----------"
+  fi
+  for (( i=1; $i <= 10; i++ ))
+  do
+    if [[ $a == 10 ]]
+    then
+      printf "%2d %1s %2d %s%3d\n" $a "x" $i "=" $((a * i))
+    else
+      printf "%2d %1s %2d %1s%3d    " $a "x" $i "=" $((a * i))
+      printf "%2d %1s %2d %1s%3d    " $b "x" $i "=" $((b * i))
+      printf "%2d %1s %2d %1s%3d\n"   $c "x" $i "=" $((c * i))
+    fi
+  done
+  echo
+done
+# output
+#     mathematical tables from 1 to 10
+#     --------------------------------
+# 
+#    Table 1         Table 2         Table 3
+#  -----------     -----------     -----------
+#  1 x  1 =  1     2 x  1 =  2     3 x  1 =  3
+#  1 x  2 =  2     2 x  2 =  4     3 x  2 =  6
+#  1 x  3 =  3     2 x  3 =  6     3 x  3 =  9
+#  1 x  4 =  4     2 x  4 =  8     3 x  4 = 12
+#  1 x  5 =  5     2 x  5 = 10     3 x  5 = 15
+#  1 x  6 =  6     2 x  6 = 12     3 x  6 = 18
+#  1 x  7 =  7     2 x  7 = 14     3 x  7 = 21
+#  1 x  8 =  8     2 x  8 = 16     3 x  8 = 24
+#  1 x  9 =  9     2 x  9 = 18     3 x  9 = 27
+#  1 x 10 = 10     2 x 10 = 20     3 x 10 = 30
+# 
+#    Table 4         Table 5         Table 6
+#  -----------     -----------     -----------
+#  4 x  1 =  4     5 x  1 =  5     6 x  1 =  6
+#  4 x  2 =  8     5 x  2 = 10     6 x  2 = 12
+#  4 x  3 = 12     5 x  3 = 15     6 x  3 = 18
+#  4 x  4 = 16     5 x  4 = 20     6 x  4 = 24
+#  4 x  5 = 20     5 x  5 = 25     6 x  5 = 30
+#  4 x  6 = 24     5 x  6 = 30     6 x  6 = 36
+#  4 x  7 = 28     5 x  7 = 35     6 x  7 = 42
+#  4 x  8 = 32     5 x  8 = 40     6 x  8 = 48
+#  4 x  9 = 36     5 x  9 = 45     6 x  9 = 54
+#  4 x 10 = 40     5 x 10 = 50     6 x 10 = 60
+# 
+#    Table 7         Table 8         Table 9
+#  -----------     -----------     -----------
+#  7 x  1 =  7     8 x  1 =  8     9 x  1 =  9
+#  7 x  2 = 14     8 x  2 = 16     9 x  2 = 18
+#  7 x  3 = 21     8 x  3 = 24     9 x  3 = 27
+#  7 x  4 = 28     8 x  4 = 32     9 x  4 = 36
+#  7 x  5 = 35     8 x  5 = 40     9 x  5 = 45
+#  7 x  6 = 42     8 x  6 = 48     9 x  6 = 54
+#  7 x  7 = 49     8 x  7 = 56     9 x  7 = 63
+#  7 x  8 = 56     8 x  8 = 64     9 x  8 = 72
+#  7 x  9 = 63     8 x  9 = 72     9 x  9 = 81
+#  7 x 10 = 70     8 x 10 = 80     9 x 10 = 90
+# 
+#   Table 10
+#  -----------
+# 10 x  1 = 10
+# 10 x  2 = 20
+# 10 x  3 = 30
+# 10 x  4 = 40
+# 10 x  5 = 50
+# 10 x  6 = 60
+# 10 x  7 = 70
+# 10 x  8 = 80
+# 10 x  9 = 90
+# 10 x 10 =100
+# 
+
+#to print the 1st 'n' Fibonacci numbs
+ printf "Enter n value: "
+ read n
+ printf "%20s" "The first $n Fibonacci Numbers:\n"
+ printf "%20s" "-------------------------------\n"
+ a=1 b=1
+ printf "$a $b\n"
+ fib=$((a+b))
+ printf "$fib\n"
+ for((numb=3; $numb < $n; numb++))
+ do
+   b=$fib
+   fib=`expr $b + $fib`
+   printf "$fib\n"
+ done
+#  output:
+# The first 15 Fibonacci Numbers:
+# -------------------------------
+#    1   1   2   3   5   8  13  21  34  55  89 144 233 377 610
+
+# An array is initialized with numbers and
+# printing them on the stdout both in
+# in original order and sorted(desc) order
+echo "Sorting of numbers"
+echo "------------------"
+declare -a arr=(5 3 7 4 9)
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+for (( i=0; $i < 5; i++ ))
+do
+  for (( j=$i+1; $j < 5; j++ ))
+  do
+  if [[ ${arr[$i]}  -gt ${arr[$j]} ]]
+  then
+     t=${arr[$i]}
+     arr[$i]=${arr[$j]}
+     arr[$j]=$t
+  fi
+  done
+done
+echo "Array numbers in sorted(desc) order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+# output
+# Sorting of numbers
+# ------------------
+# Array numbers are:
+#     5    3    7    4    9
+# Array numbers in sorted(desc) order are:
+#     9    7    5    4    3
+
+# An array is initialized with numbers and
+# printing them on the stdout both in
+# in original order and sorted(asc) order
+echo "Sorting of numbers"
+echo "------------------"
+declare -a arr=(5 3 7 4 9)
+echo "Array numbers are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+for (( i=0; $i < 5; i++ ))
+do
+  for (( j=$i+1; $j < 5; j++ ))
+  do
+  if [[ ${arr[$i]}  -lt ${arr[$j]} ]]
+  then
+     t=${arr[$i]}
+     arr[$i]=${arr[$j]}
+     arr[$j]=$t
+  fi
+  done
+done
+echo "Array numbers in sorted(asc) order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%5d" ${arr[$i]}
+done
+printf "\n"
+# output
+# Sorting of numbers
+# ------------------
+# Array numbers are:
+#     5    3    7    4    9
+# Array numbers in sorted(asc) order are:
+#     3    4    5    7    9
+
+# An array is initialized with stgs and
+# printing them on the stdout both in
+# in original order and sorted(asc) order
+echo "Sorting of stgs"
+echo "-----------------"
+declare -a arr=("rama" "hema" "krishna" "seetha" "kiran")
+echo "Array stgs are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+for (( i=0; $i < 5; i++ ))
+do
+  for (( j=$i+1; $j < 5; j++ ))
+  do
+  if [[ ${arr[$i]}  < ${arr[$j]} ]]
+  then
+     t=${arr[$i]}
+     arr[$i]=${arr[$j]}
+     arr[$j]=$t
+  fi
+  done
+done
+echo "Array stgs in sorted(asc) order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+# output
+# Sorting of stgs
+# -----------------
+# Array stgs are:
+#       rama      hema   krishna    seetha     kiran
+# Array stgs in sorted(asc) order are:
+#       hema     kiran   krishna      rama    seetha
+
+# An array is initialized with stgs and
+# printing them on the stdout both in
+# in original order and sorted(dsc) order
+echo "Sorting of stgs"
+echo "-----------------"
+declare -a arr=("rama" "hema" "krishna" "seetha" "kiran")
+echo "Array stgs are:"
+for (( i=0; $i < 5; i++ ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+for (( i=0; $i < 5; i++ ))
+do
+  for (( j=$i+1; $j < 5; j++ ))
+  do
+  if [[ ${arr[$i]}  > ${arr[$j]} ]]
+  then
+     t=${arr[$i]}
+     arr[$i]=${arr[$j]}
+     arr[$j]=$t
+  fi
+  done
+done
+echo "Array stgs in sorted(dsc) order are:"
+for (( i=4; $i >= 0; i-- ))
+do
+  printf "%10s" ${arr[$i]}
+done
+printf "\n"
+# output
+# Sorting of stgs
+# -----------------
+# Array stgs are:
+#       rama      hema   krishna    seetha     kiran
+# Array stgs in sorted(dsc) order are:
+#     seetha      rama   krishna     kiran      hema
+

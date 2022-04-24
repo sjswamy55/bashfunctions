@@ -1,0 +1,27 @@
+# fn with cmdline args
+# sum of the first 'n' natural nos
+# using $((...)) convention
+sumn1() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Sum of the first $1 naturals = "
+ s=0 numb=1 n=$1
+  # no spaces before or after '=' opr
+ while test $numb -le $n
+ do
+  s=$((numb+s))
+  numb=$((numb+1))
+ done
+ printf "$s\n"
+}
+# sumn1 5
+# output
+# Sum of the first 5 naturals = 15
+# 
+# sumn1
+# Wrong no. of args
+# sumn1 5 3
+# Wrong no. of args

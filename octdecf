@@ -1,0 +1,30 @@
+# fn with cmdline args
+# to convert octal numb to dec numb
+octdecf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ oct=$1 base=1
+ p=$oct dec=0 n=0
+ while [[ $oct > 0 ]]
+ do
+  digit=$((oct % 10))
+  dec=$((dec+digit*8**n))
+  n=$((n+1))
+  oct=$((oct/10))
+ done
+ printf "Decimal equivalent of oct %d = %d\n" $p $dec
+}
+octdecf 357
+octdecf 6551
+octdecf 1321
+octdecf 1321 345
+octdecf
+#  output:
+# Decimal equivalent of oct 357 = 239
+# Decimal equivalent of oct 6551 = 3433
+# Decimal equivalent of oct 1321 = 721
+# Wrong no. of elements
+# Wrong no. of elements

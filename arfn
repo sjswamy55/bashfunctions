@@ -1,0 +1,90 @@
+# fn with cmdline args
+# Usage: fn_name arysize aryints
+# to generate an array of numbers &
+# printing them on the stdout
+# including reverse order with
+# max, min, sum
+arfn1() {
+ n=$1; shift
+ m=$1; min=$1; s=0
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   if test $1 -gt $m
+   then
+    m=$1
+   fi
+   if test $1 -lt $min
+   then
+    min=$1
+   fi
+   s=$(($1+s))
+   shift
+ done
+ echo "Array numbers are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%5d" ${arr[$i]}
+ done
+ printf "\n"
+ echo "Array numbers in reverse order are:"
+ for (( i=$n-1; $i >= 0; i-- ))
+ do
+   printf "%5d" ${arr[$i]}
+ done
+ printf "\n"
+ printf "Max of array is $m\n"
+ printf "Min of array is $min\n"
+ printf "Sum of array is $s\n"
+}
+# arfn1 5 24 55 3 75 25
+arfn2() {
+ n=$1; shift
+ m=$1; min=$1; s=0
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   s=`echo $1+$s | bc`
+   shift
+ done
+ echo "Array numbers are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%5.1f" ${arr[$i]}
+ done
+ printf "\n"
+ echo "Array numbers in reverse order are:"
+ for (( i=$n-1; $i >= 0; i-- ))
+ do
+   printf "%5.1f" ${arr[$i]}
+ done
+ printf "\n"
+ printf "Sum of array is $s\n"
+}
+# arfn2 5 24.5 55.5 3.5 75.5 25.5
+arfn3() {
+ n=$1; shift
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   shift
+ done
+ echo "Strings are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%10s" ${arr[$i]}
+ done
+ printf "\n"
+ echo "Strings in reverse order are:"
+ for (( i=$n-1; $i >= 0; i-- ))
+ do
+   printf "%10s" ${arr[$i]}
+ done
+ printf "\n"
+}
+# arfn3 5 "ramu" "seetha" "krishna" "rukmini" "vishnu"
+# same as
+# arfn3 5 ramu seetha krishna rukmini vishnu

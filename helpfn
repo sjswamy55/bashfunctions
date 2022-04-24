@@ -1,0 +1,4 @@
+awk "/$1/,/#/" help1 | sed -n '/#/!p'
+# helpfn "primen "  (example)
+echo -e "\nTo list the fns give:"
+echo "listfns"

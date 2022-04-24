@@ -1,0 +1,41 @@
+# fn with cmdline args
+# to compute compound interest for
+# given principal amt, rate of
+# interest, numb of years
+# I = P*(1+N/100)
+compintf() {
+ if [[ $# -ne 3 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ p=$1  i=$2  n=$3 
+ t1=$p
+ for((k=1; $k <= $n; k++))
+ do
+  t=`echo "$p*(1.0+$i/100.0)" | bc scale1`
+# cat scale1 ---> scale=6
+  p=$t
+ done
+ intr=`echo "$t-$t1" | bc`
+ printf "\nThe compound interest is %f" $intr
+ printf "\nThe total amt after %d year(s) is %f\n" $n $t
+ printf "for the principal %f with interest @ %4.2f" $t1 $i
+ printf "\n"
+}
+# compintf 1000 5 6
+# compintf 3000 7 6
+# compintf 3000 7 6 12
+# compintf 3000 7
+# compintf
+# output
+# The compound interest is 340.095640
+# The total amt after 6 year(s) is 1340.095640
+# for the principal 1000.000000 with interest @ 5.00
+
+# The compound interest is 1502.191055
+# The total amt after 6 year(s) is 4502.191055
+# for the principal 3000.000000 with interest @ 7.00
+# Wrong no. of args
+# Wrong no. of args
+# Wrong no. of args

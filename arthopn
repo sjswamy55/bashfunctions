@@ -1,0 +1,21 @@
+# fn with cmdline args
+# Usage: fn_name float1 float2 
+# to perform arithmetic on floats
+arthopn() {
+ if [[ $# -ne 2 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ a=$1 b=$2 
+ echo "$a + $b = `echo $a+$b | bc`"
+ echo "$a - $b = `echo $a-$b | bc`"
+ echo "$a * $b = `echo $a\*$b | bc`"
+ echo "$a / $b = `echo $a/$b | bc`"
+}
+# arthopn 5.50 3.50
+# output
+# 5.50 + 3.50 = 9.00
+# 5.50 - 3.50 = 2.00
+# 5.50 * 3.50 = 19.25
+# 5.50 / 3.50 = 1

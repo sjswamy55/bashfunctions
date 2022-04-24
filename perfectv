@@ -1,0 +1,40 @@
+# fn with cmdline args
+# to generate the perfect numbers below n
+# using ++ opr and $((expn)) convention
+# (sum of the proper factors = original number)
+perfectv() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ echo " Perfect numbers below $1"
+ echo " --------------------------"
+ for (( n=2; $n < $1; n++ ))
+ do
+  lmt=$n/2
+  sum=1
+  for (( divr=2; $divr <= $lmt; divr++ ))
+  do
+   if [[ $((n % divr)) == 0 ]]
+   then
+      sum=$((sum+divr))
+   fi
+  done  # for divr
+  if [[ $sum == $n ]]
+  then
+    printf "%5d" $n
+  fi
+ done  # for n
+ printf "\n"
+}
+# perfectv 1000
+# output
+# Perfect numbers below 1000
+# --------------------------
+#    6   28  496
+# 
+# perfectv
+# Wrong no. of args
+# perfectv 1000 100
+# Wrong no. of args

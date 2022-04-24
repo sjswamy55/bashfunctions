@@ -1,0 +1,184 @@
+#
+ arfn1 arysize aryelts
+ - to generate an array of ints &
+  printing them including reverse order
+  along with max, min and sum of the
+  array of nos
+#
+ arfn2 arysize aryfloats
+ - to generate an array of floats
+  and printing them including 
+  sum of the array of floats
+#
+ arfn3 arysize arystgs
+ - to generate an array of stgs &
+  printing them including sorted order
+#
+ armstrong int
+ - to check wether the given int
+  is armstrong or not
+ (armstrong numb: sum of the cubes
+  of the individual digits = numb)
+#
+ arthopn float1 float2 
+ - to perform arithmetic on floats
+   (+,-,/,\*)
+#
+ autom1 int
+ - to generate the automorphic numbers
+   below the given int n
+#
+ autom2 int
+ - to generate the automorphic numbers
+   below the given int n
+#
+ baseconv numb_to_convert obase
+ - to convert the given +ve numb (ibase 10)
+  another obase(must be b/w 2 & 16)
+#
+ char char
+ - to print the type of given char
+#
+ chctrs "stg"
+ - to print the ucase, lcase,
+  digit, special char ctrs
+  for given stg (or "stg")
+#
+ diamondf int
+ - to print a diamond structure with *
+#
+ eoddsum even_odd_numbs
+ - sum of even & odd numbers
+#
+ evenodd
+ - to check the given int is odd or
+   even
+#
+ fact1ton int
+ - to print the factorials from
+   1 to n
+#
+ factn
+ - to print the factorial of
+   a given int
+#
+ fibn count
+ - to print the count no. of
+   fibonacci nos
+#
+ gcdf int1 int2
+ - to print the gcd of two
+   given ints
+#
+ grdfn htno 6marks
+ - to compute the student grade
+#
+ grospay basicpay
+ - to compute hra, da, grospay
+   on given basicpay
+#
+ isautom int
+ - to check whether the given
+  numb is automorphic or not
+#
+ isleapyr year
+ - to check whether the given
+  year is leap year or not
+#
+ isperfect int
+ - to check whether the given
+  numb is perfect or not
+#
+ isprime int
+ - to check whether the given
+  numb is prime or not
+#
+ mathf int
+ - to print the mathematical tables
+  from 1 to n in 3-columns
+#
+ max3 int1 int2 int3
+ - to print the max of 3 nos
+#
+ maxary ints
+ - to print the max of an
+   array of nos given on
+   the cmdline
+#
+ minary ints
+ - to print the min of an
+   array of nos given on
+   the cmdline
+#
+ nextdtv dd mm year
+ - to print the next date
+#
+ perfectv int
+ - to generate the perfect
+   numbers below the given int
+  (sum of the proper factors
+   = original number)
+#
+ polind int
+ - to check whether the given
+   number is polindrome or not
+#
+ primebw int1 int2
+ - to generate the primes between
+  any 2 given ints
+#
+ primen int
+ - to generate the primes below
+  the given int (10 primes per line)
+#
+ primen1 int
+ - to generate the primes below
+  the given int (10 primes per line)
+#
+ revnof int
+ - to print the given number in
+  reverse order & sum of digits
+#
+ revstg "stg"
+ - to print the given stg in
+  reverse order
+#
+revstgf "stg"
+ - to print the given stg in
+   reverse order
+#
+ series1 count xval
+ - to print the sum of the series
+   1+x+x**2+x**3+...+x**n
+#
+ sortdf arysize aryelts
+ - to generate an array of
+   numbers & printing them
+  including sorted (dsc) order
+#
+sortf arysize aryelts
+ - to generate an array of
+   numbers & printing them
+   including sorted order
+#
+ sumn1 int
+ - sum of the 1st 'n' natural nos
+#
+ sumn2 int
+ - sum of the 1st 'n' natural nos
+#
+ sumn3 int
+ - to print the sum of sqrs of
+  the 1st 'n' naturals
+#
+ sumn4 int
+ - to print the sum of cubes of
+  the 1st 'n' naturals
+#
+ triangl1 int1 int2
+ - to print the 1 to 5 digits triangle
+#
+ triangl2 int1 int2
+ - to print the 1 to 5 digits
+   equilateral triangle
+#

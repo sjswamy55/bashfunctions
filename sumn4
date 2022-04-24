@@ -1,0 +1,27 @@
+# fn with cmdline args
+# to print the sum of cubes of the 1st
+# 'n' naturals using $((...)) convention
+sumn4() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Sum of cubes of the first $1 naturals = "
+ s=0 numb=1 n=$1
+  # no spaces before or after '=' opr
+ while test $numb -le $n
+ do
+  s=$((numb**3+s))
+  numb=$((numb+1))
+ done
+ printf "$s\n"
+}
+# sumn4 5
+# output
+# Sum of cubes of the first 5 naturals = 225
+# 
+# sumn4
+# Wrong no. of args
+# sumn4 5 3
+# Wrong no. of args

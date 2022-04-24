@@ -1,0 +1,32 @@
+# fn with cmdline args
+# to check whether the given number
+# is polindrome or not
+polind() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ prev=$1 n=$1
+ for (( revnumb=0; $n != 0; ))
+ do
+   revnumb=$((revnumb*10 + $n%10))
+   n=$((n / 10))
+ done
+ if [[ $revnumb == $prev ]]
+ then
+   echo "$prev is a polindrome"
+ else
+   echo "$prev is not a polindrome"
+ fi
+}
+# polind 12321
+# polind 125
+# output
+# 12321 is a polindrome
+# 125 is not a polindrome
+# 
+# polind
+# Wrong no. of args
+# polind 12321 256
+# Wrong no. of args

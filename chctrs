@@ -1,0 +1,54 @@
+# fn with cmdline args
+# to print the ucase, lcase,
+# digit, special char ctrs
+# for given stg (or "stg")
+chctrs() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ stg=$1
+ uctr=0 lctr=0 dctr=0 sctr=0
+ echo "Original string: $stg"
+# l=${#stg}
+ l=`expr length "$stg"`
+ for (( n=$l; $n > 0; n-- ))
+ do
+  c=`expr substr "$stg" $n 1`
+# [A-Z],[a-z] ranges are not valid in case stgs
+ case ${c} in
+ [ABCDEFGHIJKLMNOPQRSTUVWXYZ]) uctr=`expr $uctr + 1`
+#[A-Z]) uctr=`expr $uctr + 1`
+      ;;
+ [a-z]) lctr=`expr $lctr + 1`
+      ;;
+ [0-9]) dctr=`expr $dctr + 1`
+      ;;
+   *) sctr=`expr $sctr + 1`
+      ;;
+  esac
+ done
+ echo "The no. of uppercase alphabets: $uctr"
+ echo "The no. of lowercase alphabets: $lctr"
+ echo "The no. of digits: $dctr"
+ echo "The no. of special chars: $sctr"
+}
+# chctrs "RameshA123 &()#$"
+# chctrs "RameshA123 &()#$ BSD TCD CMG 456789"
+# output
+# Original string: RameshA123 &()#$
+# The no. of uppercase alphabets: 2
+# The no. of lowercase alphabets: 5
+# The no. of digits: 3
+# The no. of special chars: 6
+# Original string: RameshA123 &()#$ BSD TCD CMG 456789
+# The no. of uppercase alphabets: 11
+# The no. of lowercase alphabets: 5
+# The no. of digits: 9
+# The no. of special chars: 10
+# 
+# chctrs
+# Wrong no. of args
+# chctrs "ramesh" "hanuman"
+# Wrong no. of args

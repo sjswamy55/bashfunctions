@@ -1,0 +1,45 @@
+# fn with cmdline args
+# Usage: fn_name numb_to_convert obase
+# to convert the given +ve numb (ibase 10)
+# another obase(must be b/w 2 & 16)
+baseconv() {
+ if [[ $# -ne 2 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ elif [[ $2 -lt 2 || $2 -gt 16 ]]
+ then
+   printf "obase must be b/w 2 & 16\n" 
+   return
+ fi
+ n=$1 base=$2
+ declare -a convnumb[16]
+ basedgts=( "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" )
+ for (( i=0; $n > 0; i++ ))
+ do
+   convnumb[$i]=$((n%base))
+   n=$((n/base))
+ done
+ printf "Converted number: "
+ for (( --i; $i >= 0; i-- ))
+ do
+   nextdgt=convnumb[$i]
+   printf "%c" ${basedgts[$nextdgt]}
+ done
+ printf "\n"
+}
+# baseconv 100 8
+# baseconv 177 8
+# baseconv 1983 16
+# baseconv 10 2
+# output
+# Converted number: 144
+# Converted number: 261
+# Converted number: 7bf
+# (15+11*16+16*16*7=1983)
+# Converted number: 1010
+# 
+# baseconv 89 17
+# obase must be b/w 2 & 16
+# baseconv 89 1
+# obase must be b/w 2 & 16

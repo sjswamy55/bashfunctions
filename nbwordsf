@@ -1,0 +1,149 @@
+# to convert numb to words
+# usage: fn_name int
+nbwordsf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ n=$1
+ dupn=$n flag=0
+ declare -a rem[3]
+ if [[ $n -ge 1000 ]]
+ then
+  printf "Numb should lie b/w 0 & 999\n"
+  return
+ fi
+ if [[ $n == 0 ]]
+ then
+   echo "ZERO" >> words
+ else
+  ctr=0
+  echo "" > words
+  if [[ $flag -eq 0 ]]
+  then
+    echo -n "Rs. " >> words
+    flag=1
+  fi
+  while [[ $dupn != 0 ]]
+  do
+   rem[$ctr]=$((dupn % 10))
+   dupn=$((dupn / 10))
+   ctr=$((ctr+1))
+  done   # while
+  ctr=$((ctr-1))
+  while [[ $ctr -ge 0 ]]
+  do
+   case  "${rem[$ctr]}"  in
+    1) if [[ $ctr == 2 || $ctr == 0 ]]
+       then
+          echo -n "ONE " >> words
+       else
+          case  "$rem[$ctr-1]"  in
+           0) echo -n "TEN " >> words
+              ;;
+           1) echo -n "ELEVEN " >> words
+              ;;
+           2) echo -n "TWELVE " >> words
+              ;;
+           3) echo -n "THIRTEEN " >> words
+              ;;
+           4) echo -n "FOURTEEN " >> words
+              ;;
+           5) echo -n "FIFTEEN " >> words
+              ;;
+           6) echo -n "SIXTEEN " >> words
+              ;;
+           7) echo -n "SEVENTEEN " >> words
+              ;;
+           8) echo -n "EIGHTEEN " >> words
+              ;;
+           9) echo -n "NINETEEN " >> words
+              ;;
+           esac
+            ctr=0
+           fi
+           ;;
+    2) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "TWO " >> words
+            else
+             echo -n "TWENTY " >> words
+            fi
+            ;;
+    3) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "THREE " >> words
+            else
+             echo -n "THIRTY " >> words
+            fi
+            ;;
+    4) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "FOUR " >> words
+            else
+             echo -n "FORTY " >> words
+            fi
+            ;;
+    5) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "FIVE " >> words
+            else
+             echo -n "FIFTY " >> words
+            fi
+            ;;
+    6) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "SIX " >> words
+            else
+             echo -n "SIXTY " >> words
+            fi
+            ;;
+    7) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "SEVEN " >> words
+            else
+             echo -n "SEVENTY " >> words
+            fi
+            ;;
+    8) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "EIGHT " >> words
+            else
+             echo -n "EIGTHY " >> words
+            fi
+            ;;
+    9) if [[ $ctr -eq 2 || $ctr -eq 0 ]]
+            then
+             echo -n "NINE " >> words
+            else
+             echo -n "NINETY " >> words
+            fi
+            ;;
+   esac
+   if [[ $ctr -eq 2 ]]
+   then
+    if [[ ${rem[1]} -eq 0 && ${rem[0]} -eq 0 ]]
+    then
+     echo -n "HUNDRED " >> words
+    else
+     echo -n "HUNDRED AND " >> words
+    fi
+   fi
+   ctr=$((ctr-1))
+  done
+ fi
+ printf "%s " `cat words`
+ printf "\n"
+}
+# nbwordsf 987
+# nbwordsf 999
+# nbwordsf 1000
+# nbwordsf 9 7
+# nbwordsf
+# output:
+# Rs. NINE HUNDRED AND EIGTHY SEVEN 
+# Rs. NINE HUNDRED AND NINETY NINE 
+# Numb should lie b/w 0 & 999
+# Wrong no. of args
+# Wrong no. of args

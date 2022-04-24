@@ -1,0 +1,39 @@
+# fn with cmdline args
+# to print the 1 to 5 digits equilateral triangle
+# using ++ opr and $((expn)) convention
+triangl2() {
+ if [[ $# -ne 2 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ a=$1 b=$2
+ echo "$1 to $2 digits equilateral triangle"
+ for (( a=1; $a < 6; a++ ))
+ do
+   for (( c=4; $c >= $a; c-- ))
+   do
+     echo -e " \c"
+   done
+   for (( b=1; $b <= $a; b++ ))
+   do
+     echo -e "$a \c"
+   done
+   echo
+ done
+}
+# triangl2 1 5
+# output
+# 1 to 5 digits equilateral triangle
+#     1 
+#    2 2 
+#   3 3 3 
+#  4 4 4 4 
+# 5 5 5 5 5 
+# 
+# triangl2
+# Wrong no. of args
+# triangl2 1
+# Wrong no. of args
+# triangl2 1 5 7
+# Wrong no. of args

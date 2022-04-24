@@ -1,0 +1,78 @@
+# fn with cmdline args
+# to print a diamond structure with *
+# using ++ opr and $((expn)) convention
+diamondf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ n=$1
+ echo "A $1-diamond structure with *"
+ for (( d=1; $d <= $n; d++ ))
+ do
+   for (( b=$d; $b < $n; b++ ))
+   do
+     echo -e " \c"
+   done
+     echo -e "*\c"
+   if test $d -ne 1
+   then
+     for (( c=2; $c < $d; c++ ))
+     do
+      echo -e "  \c"
+     done
+     echo -e " *\c"
+   fi
+   echo   
+ done
+ for (( d=$n-1; $d > 0; d-- ))
+ do
+  for (( b=$d; $b < $n; b++ ))
+  do
+   echo -e " \c"
+  done
+  echo -e "*\c"
+  if test $d -ne 1
+  then
+   for (( c=2; $c < $d; c++ ))
+   do
+    echo -e "  \c"
+   done
+   echo -e " *\c"
+  fi
+  echo
+ done
+}
+# diamondf 7
+# diamondf 5
+# output
+# A 7-diamond structure with *
+#       *
+#      * *
+#     *   *
+#    *     *
+#   *       *
+#  *         *
+# *           *
+#  *         *
+#   *       *
+#    *     *
+#     *   *
+#      * *
+#       *
+# A 5-diamond structure with *
+#     *
+#    * *
+#   *   *
+#  *     *
+# *       *
+#  *     *
+#   *   *
+#    * *
+#     *
+# 
+# diamondf 5 7
+# Wrong no. of args
+# diamondf
+# Wrong no. of args

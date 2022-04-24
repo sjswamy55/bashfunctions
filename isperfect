@@ -1,0 +1,38 @@
+# fn with cmdline args
+# to check whether the given numb
+# is perfect or not
+# using ++ opr and $((expn)) convention
+# (sum of the proper factors = original number)
+isperfect() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+  n=$1
+  lmt=$n/2
+  sum=1
+  for (( divr=2; $divr <= $lmt; divr++ ))
+  do
+   if [[ $((n % divr)) == 0 ]]
+   then
+      sum=$((sum+divr))
+   fi
+  done  # for divr
+  if [[ $sum == $n ]]
+  then
+    printf "$n is a perfect number\n"
+  else
+    printf "$n is not a perfect number\n"
+  fi
+}
+# isperfect 496
+# isperfect 150
+# output
+# 496 is a perfect number
+# 150 is not a perfect number
+# 
+# isperfect
+# Wrong no. of elements
+# isperfect 150 78
+# Wrong no. of elements

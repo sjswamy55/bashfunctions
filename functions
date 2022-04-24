@@ -1,0 +1,59 @@
+FUNCTIONS
+  A shell fn, stores a series of cmds for later
+  execution. When the name of a shell fn is used
+  as a simple cmd name, the list of cmds associated
+  with that fn name is executed. Fns are executed
+  in the context of the curr shell; no new ps is
+  created to interpret them (contrast this with
+  the execution of a shell script). When a fn is
+  executed, the args to the fn become the posnal
+  pars during its execution. The spl par # is
+  updated to reflect the change. Special par 0 is
+  unchanged. The first elt of the FUNCNAME var is
+  set to the name of the fn while the fn is executing.
+
+  All other aspects of the shell execution env are
+  identical b/w a fn & its caller with these
+  exceptions: the DEBUG and RETURN traps are not
+  inherited unless the fn has been given the trace
+  attribute or the -o functrace shell optn has
+  been enabled with the set builtin (in which
+  case all fns inherit the DEBUG & RETURN traps),
+  and the ERR trap is not inherited unless the
+  -o errtrace shell optn has been enabled.
+
+  Vars local to the fn may be declared with the
+  local builtin cmd. Ordinarily, vars & their
+  vals are shared b/w the fn & its caller.
+
+  The FUNCNEST var, if set to a numeric val > 0,
+  defines a max fn nesting level. Fn invocns that
+  exceed the limit cause the entire cmd to abort.
+
+  If the builtin cmd retn is executed in a fn,
+  the fn completes & execution resumes with the
+  next cmd after the fn call. Any cmd associated
+  with the RETURN trap is executed before execution
+  resumes. When a fn completes, the vals of  the
+  posnal pars & the spl par # are restored to the
+  vals they had prior to the fn's execution.
+
+  Fn names & defns may be listed with the -f optn
+  to the declare  or typeset builtin cmds. The -F
+  optn to declare or typeset will list the fn names
+  only (and optnally the source file & line number,
+  if the extdebug shell optn is enabled).
+  Fns may be exported so that subshells automatically
+  have them defined with the -f optn to the export
+  builtin.
+  A fn defn may be deleted using the -f optn to the
+  unset builtin. Note that shell fns & vars with the
+  same name may result in multiple identically-named
+  entries in the env passed to the shell's children.
+  Care should be taken in cases where this may cause
+  a problem.
+
+  Fns may be recursive. The FUNCNEST var may be used
+  to limit the depth of the fn call stack & restrict
+  the no. of fn invocns. By default, no limit is
+  imposed on the no. of recursive calls.

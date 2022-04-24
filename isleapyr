@@ -1,0 +1,33 @@
+# fn with cmdline args
+# to check whether the given year
+# is leap year or not
+# using $((expn)) convention
+ isleapyr() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ yr=$1
+  rem4=$((yr%4))
+  rem100=$((yr%100))
+  rem400=$((yr%400))
+  if [[ $rem4 -eq 0 && $rem100 -ne 0 || rem400 -eq 0 ]]
+   then
+    printf "$yr is a leap year\n"
+  else
+    printf "$yr is not a leap year\n"
+  fi
+ }
+# isleapyr 2019
+# isleapyr 2010
+# isleapyr 2020
+# output
+# 2019 is not a leap year
+# 2010 is not a leap year
+# 2020 is a leap year
+# 
+# isleapyr
+# Wrong no. of args
+# isleapyr 2019 25
+# Wrong no. of args

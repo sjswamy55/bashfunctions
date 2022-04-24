@@ -1,0 +1,48 @@
+# fn with cmdline args
+# Usage: fn_name arysize aryelts
+# to generate an array of floats and
+# printing them on the stdout
+# including reverse order
+# using ++ opr and 'for' loop
+# sum of an array of floats
+arfn2() {
+ if [[ $#-1 -ne $1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ n=$1; shift
+ m=$1; min=$1; s=0
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   s=`echo $1+$s | bc`
+   shift
+ done
+ echo "Array numbers are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%5.1f" ${arr[$i]}
+ done
+ printf "\n"
+ echo "Array numbers in reverse order are:"
+ for (( i=$n-1; $i >= 0; i-- ))
+ do
+   printf "%5.1f" ${arr[$i]}
+ done
+ printf "\n"
+ printf "Sum of array is $s\n"
+}
+# arfn2 5 24.5 55.5 3.5 75.5 25.5
+# output
+# Array numbers are:
+#  24.5 55.5  3.5 75.5 25.5
+# Array numbers in reverse order are:
+#  25.5 75.5  3.5 55.5 24.5
+# Sum of array is 184.5
+
+# arfn1 3 24.5 55.5
+# Wrong no. of elements
+# arfn1 3 24.5 55.5 25.5 45.5
+# Wrong no. of elements

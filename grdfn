@@ -1,0 +1,81 @@
+# Students grade problem
+# Input: htno, 6 subjects marks
+# Output: htno, 6 subjects marks, total, avg, grade
+# Rules:
+#  avg > 80, grade is "I"
+#  avg > 60, grade is "II"
+#  avg > 50, grade is "III"
+#  avg > 40, grade is "PASS"
+#  avg <= 40, grade is "FAIL"
+# Minimum marks in each subject should be >= 35
+# Usage: fn_name htno 6marks
+# to generate an array of 6 nos &
+# printing the htno,6 marks, totmarks,
+# avg, grade on the stdout
+# using ++ opr and 'for' loop
+grdfn() {
+ if [[ $# -ne 7 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ htno=$1; shift
+ flag=0  s=0
+ declare -a arr[6]
+ for (( i=0; $i < 6; i++ ))
+ do
+   arr[$i]=$1
+   s=$(($1+s))
+   shift
+ done
+ avg=$((s/6))
+ printf "%4d"  $htno
+ for (( i=0; $i < 6; i++ ))
+ do
+  printf "%4d"  ${arr[$i]}
+ done
+ printf "%5d%5d"  $s $avg
+ for ((i=0; $i < 6; i++))
+ do
+  if test ${arr[$i]} -lt 35
+  then
+     flag=1
+     break
+  fi
+ done
+ if test $flag -eq 1
+ then
+  printf " FAIL\n"
+ else
+  case `expr $avg / 10` in
+   10|9|8) printf "   I\n"
+      ;;
+   7|6) printf "  II\n"
+      ;;
+   5) printf " III\n"
+      ;;
+   4) printf " PASS\n"
+      ;;
+   *) printf " FAIL\n"
+      ;;
+  esac
+ fi
+}
+# grdfn 10 75 85 95 67 99 77
+# grdfn 20 77 33 76 79 91 80
+# grdfn 30 87 97 67 77 95 91
+# grdfn 40 61 63 65 63 66 65
+# grdfn 50 45 47 49 45 47 44
+# grdfn 60 51 53 55 53 56 55
+# output
+# 10  75  85  95  67  99  77  498   83   I
+# 20  77  33  76  79  91  80  436   72 FAIL
+# 30  87  97  67  77  95  91  514   85   I
+# 40  61  63  65  63  66  65  383   63  II
+# 50  45  47  49  45  47  44  277   46 PASS
+# 60  51  53  55  53  56  55  323   53 III
+# 
+# grdfn
+# Wrong no. of elements
+# grdfn 19 59 50 70
+# Wrong no. of elements

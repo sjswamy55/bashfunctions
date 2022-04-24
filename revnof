@@ -1,0 +1,30 @@
+# fn with cmdline args
+# to print the given number
+# in reverse order & sum of digits
+revnof() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ n=$1 s=0
+ printf "Original Number is $1\n"
+ for (( revnumb=0; $n != 0; ))
+ do
+   s=`expr $s + $n % 10`
+   revnumb=$((revnumb*10 + $n%10))
+   n=$((n / 10))
+ done
+ printf "Reverse Number is $revnumb\n"
+ printf "Sum of digits is $s\n"
+}
+# revnof 12345
+# output
+# Original Number is 12345
+# Reverse Number is 54321
+# Sum of digits is 15
+# 
+# revnof
+# Wrong no. of args
+# revnof 12345 245
+# Wrong no. of args

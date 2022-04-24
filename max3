@@ -1,0 +1,33 @@
+# fn with cmdline args
+# max of 3 nos
+max3() {
+ if [[ $# -ne 3 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Max of $1, $2, $3 is "
+ if test $1 -gt $2
+ then
+   m=$1
+ else
+   m=$2
+ fi
+ if test $m -gt $3
+ then
+   printf "$m\n"
+ else
+   printf "$3\n"
+ fi
+}
+# output
+# max3 5 24 55
+# max3 5 55 24
+# max3 55 24 5
+# Max of 5, 24, 55 is 55
+# max3 55
+# Wrong no. of args
+# max3
+# Wrong no. of args
+# max3 55 24 5 25
+# Wrong no. of args

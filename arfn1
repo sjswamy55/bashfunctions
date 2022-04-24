@@ -1,0 +1,60 @@
+# fn with cmdline args
+# Usage: fn_name arysize aryelts
+# to generate an array of numbers and
+# printing them on the stdout
+# including reverse order
+# using ++ opr and 'for' loop
+# max, min and sum of an array of nos
+arfn1() {
+ if [[ $#-1 -ne $1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ n=$1; shift
+ m=$1; min=$1; s=0
+ declare -a arr[$n]
+ for (( i=0; $i < $n; i++ ))
+ do
+   arr[$i]=$1
+   if test $1 -gt $m
+   then
+    m=$1
+   fi
+   if test $1 -lt $min
+   then
+    min=$1
+   fi
+   s=$(($1+s))
+   shift
+ done
+ echo "Array numbers are:"
+ for (( i=0; $i < $n; i++ ))
+ do
+   printf "%5d" ${arr[$i]}
+ done
+ printf "\n"
+ echo "Array numbers in reverse order are:"
+ for (( i=$n-1; $i >= 0; i-- ))
+ do
+   printf "%5d" ${arr[$i]}
+ done
+ printf "\n"
+ printf "Max of array is $m\n"
+ printf "Min of array is $min\n"
+ printf "Sum of array is $s\n"
+}
+# arfn1 5 24 55 3 75 25
+# output
+# Array numbers are:
+#    24   55    3   75   25
+# Array numbers in reverse order are:
+#    25   75    3   55   24
+# Max of array is 75
+# Min of array is 3
+# Sum of array is 182
+
+# arfn1 3 24 55
+# Wrong no. of elements
+# arfn1 3 24 55 25 45
+# Wrong no. of elements

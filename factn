@@ -1,0 +1,28 @@
+# fn with cmdline args
+# to print the factorial of a given int
+factn() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Factorial of $1 is "
+ pn=$1
+ for (( factn=1; $pn > 0; ))
+ do
+  factn=$((factn * pn--))
+   # no spaces before or after '=' opr
+ done
+ printf "$factn\n"
+ 
+}
+# factn 5
+# factn 10
+# output
+# Factorial of 5 is 120
+# Factorial of 10 is 3628800
+# 
+# factn
+# Wrong no. of args
+# factn 5 10
+# Wrong no. of args

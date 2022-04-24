@@ -1,0 +1,27 @@
+# fn with cmdline args
+# to print the sum of sqrs of the 1st
+# 'n' naturals using $((...)) convention
+sumn3() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ printf "Sum of squares of the 1st $1 naturals = "
+ s=0 numb=1 n=$1
+  # no spaces before or after '=' opr
+ while test $numb -le $n
+ do
+  s=$((numb**2+s))
+  numb=$((numb+1))
+ done
+ printf "$s\n"
+}
+# sumn3 5
+# output
+# Sum of squares of the first 5 naturals = 55
+# 
+# sumn3
+# Wrong no. of args
+# sumn3 5 3
+# Wrong no. of args

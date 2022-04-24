@@ -1,0 +1,6 @@
+function definition:
+fn_name() {
+ initialization of local variables # optional
+ executable staements
+}
+fn_name arguments # function call with parameters

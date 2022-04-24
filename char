@@ -1,0 +1,38 @@
+# fn with cmdline args
+# to print the type of given char
+char() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ ch=$1
+# [A-Z],[a-z] ranges valid in case chars
+ case $ch in
+ [A-Z]) echo "It is an upper case char"
+      ;;
+ [a-z]) echo "It is a lower case char"
+      ;;
+ [0-9]) echo "It is a digit"
+      ;;
+     ?) echo "It is a special char"
+      ;;
+   *) echo "It is more than one char"
+      ;;
+  esac
+}
+# char R
+# char a
+# char 9
+# char +
+# char abc
+# char
+# char a b 3
+# output
+# It is an upper case char
+# It is a lower case char
+# It is a digit
+# It is a special char
+# It is more than one char
+# Wrong no. of args
+# Wrong no. of args

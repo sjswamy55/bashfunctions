@@ -1,0 +1,41 @@
+# fn with cmdline args
+# to generate the automorphic numbers below n
+# using ++ opr and $((expn)) convention
+autom1() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ echo "    Automorphic numbers below $1"
+ echo "    -------------------------------"
+ for (( numb=1; $numb < $1; numb++ ))
+ do
+  sqr=$((numb*numb))
+  if [[ $numb -lt 10 && $((sqr % 10)) -eq $numb ]]
+   then
+    printf "%5d" $numb
+    continue
+  fi
+  if [[ $numb -gt 10 && $numb -lt 100 && $((sqr % 100)) -eq $numb ]]
+   then
+    printf "%5d" $numb
+    continue
+  fi
+  if [[ $numb -gt 100 && $numb -lt 1000 && $((sqr % 1000)) -eq $numb ]]
+   then
+    printf "%5d" $numb
+  fi
+ done  # for numb
+ printf "\n"
+ }
+# autom1 1000
+# output
+#   Automorphic numbers below 1000
+#   -----------------------------
+#   1    5    6   25   76  376  625
+# 
+# autom1 50 36
+# Wrong no. of elements
+# autom1
+# Wrong no. of elements

@@ -1,0 +1,88 @@
+# fn with cmdline args & validation
+# to check whether the given year
+# is leap year or not
+# using ++ opr and $((expn)) convention
+nextdtv() {
+ if [[ $# -ne 3 ]]
+ then
+   printf "No. of args $# must be 3\n"
+   return
+ fi
+ dd=$1 mm=$2 yr=$3
+ if [[ $dd -gt 31 || $dd -lt 1 ]]
+ then
+   printf "dd $dd is invalid\n"
+   return
+ elif [[ $mm -gt 12 || $mm -lt 1 ]]
+ then
+   printf "mm $mm is invalid\n"
+   return
+ elif [[ $yr -gt 9999 || $yr -lt 1 ]]
+ then
+   printf "yr $yr is invalid\n"
+   return
+ elif [[ $mm -eq 2 && $dd -gt 29 ]]
+ then
+   printf "dd must be <= 29\n"
+   return
+ fi
+ daysmonth=( 31 28 31 30 31 30 31 31 30 31 30 31 )
+ rem4=$((yr%4))
+ rem100=$((yr%100))
+ rem400=$((yr%400))
+ if [[ ${rem4} -eq 0 && ${rem100} -ne 0 || ${rem400} -eq 0 ]]
+ then
+   leap=1
+ else
+   leap=0
+ fi
+ if [[ $leap -eq 0 && $mm -eq 2 && $dd -gt 28 ]]
+ then
+   printf "dd must be <= 28\n"
+   return
+ fi
+ if [[ $leap -eq 1 && $mm -eq 2 ]]
+ then
+   daysmonth[1]=29
+ else
+   daysmonth[1]=28
+ fi
+ echo ${daysmonth[1]}
+ if test $dd -ne ${daysmonth[$mm-1]}
+ then
+   tdd=$((dd+1))
+   tmm=$mm
+   tyr=$yr
+ elif test $mm -eq 12
+ then
+   tdd=1
+   tmm=1
+   tyr=$((yr+1))
+ else
+   tdd=1
+   tmm=$((mm+1))
+   tyr=$yr
+ fi
+ printf "Tomorrows date is $tdd/$tmm/$tyr\n"
+}
+# output
+# nextdtv 11 5 2020
+# Tomorrows dtv is 12/5/2020
+# nextdtv 31 12 2019
+# Tomorrows dtv is 1/1/2020
+# nextdtv 28 2 2020
+# Tomorrows dtv is 29/2/2020
+# nextdtv 31 3 2019
+# Tomorrows dtv is 1/4/2019
+# nextdtv 28 2 2019
+# Tomorrows dtv is 1/3/2019
+# nextdtv 29 2 2019
+# dd must be <= 28
+# nextdtv 29 2 2019 5
+# No. of args 4 must be 3
+# nextdtv 29 13 2019
+# mm 13 is invalid
+# nextdtv 28 13
+# No. of args 2 must be 3
+# nextdtv
+# No. of args 0 must be 3

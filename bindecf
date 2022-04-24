@@ -1,0 +1,34 @@
+# fn with cmdline args
+# to convert bin numb to dec numb
+bindecf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ bin=$1 base=1
+ printf "binary numb is %d\n"  $bin
+ p=$bin dec=0 n=0
+ while [[ $bin > 0 ]]
+ do
+  digit=$((bin % 10))
+  dec=$((dec+digit*2**n))
+  n=$((n+1))
+  bin=$((bin/10))
+ done
+ printf "Decimal equivalent of bin %d = %d\n" $p $dec
+}
+bindecf 1111
+bindecf 11111
+bindecf 10101
+bindecf 10101 111
+bindecf
+#  output:
+# binary numb is 1111
+# Decimal equivalent of bin 1111 = 15
+# binary numb is 11111
+# Decimal equivalent of bin 11111 = 31
+# binary numb is 10101
+# Decimal equivalent of bin 10101 = 21
+# Wrong no. of elements
+# Wrong no. of elements

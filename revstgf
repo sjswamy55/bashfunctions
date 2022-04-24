@@ -1,0 +1,31 @@
+# fn with cmdline args
+# to print the given stg in
+# reverse order
+revstgf() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of args\n" 
+   return
+ fi
+ stg=$1
+ echo "Original string: $stg"
+ printf "Reverse string: "
+# l=${#stg}
+ l=`expr length "$stg"`
+ for (( n=$l; $n > 0; n-- ))
+ do
+  c1=`expr substr "$stg" $n 1`
+# echo -e "$c1\c"
+  printf  "$c1"
+ done
+ echo
+}
+# revstgf "ramesh"
+# output
+# Original string: ramesh
+# Reverse string: hsemar
+# 
+# revstgf
+# Wrong no. of args
+# revstgf "ramesh"
+# Wrong no. of args

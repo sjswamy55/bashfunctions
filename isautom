@@ -1,0 +1,35 @@
+# fn with cmdline args
+# to check whether the given numb
+# is automorphic or not
+# using $((expn)) convention
+isautom() {
+ if [[ $# -ne 1 ]]
+ then
+   printf "Wrong no. of elements\n" 
+   return
+ fi
+ numb=$1
+  sqr=$((numb*numb))
+  if [[ $numb -lt 10 && $((sqr % 10)) -eq $numb ]]
+   then
+    printf "$numb is automorphic\n"
+  elif [[ $numb -gt 10 && $numb -lt 100 && $((sqr % 100)) -eq $numb ]]
+   then
+    printf "$numb is automorphic\n"
+  elif [[ $numb -gt 100 && $numb -lt 1000 && $((sqr % 1000)) -eq $numb ]]
+   then
+    printf "$numb is automorphic\n"
+  else
+    printf "$numb is not automorphic\n"
+  fi
+ }
+# isautom 25
+# isautom 50
+# output
+# 25 is automorphic
+# 50 is not automorphic
+# 
+# isautom
+# Wrong no. of elements
+# isautom 25 50
+# Wrong no. of elements
