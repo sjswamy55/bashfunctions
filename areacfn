@@ -1,0 +1,19 @@
+# fn with cmdline args
+# using ++, ,(comma) oprs and $((expn)) convention
+# to print the area & circumference
+# of a circle with printf (input is radius)
+areacfn() {
+ PI=3.1415 radius=$1
+# area=$((radius * radius * PI))
+ area=`echo "$radius*$radius*$PI" | bc`
+ circumference=`echo "2*$PI*$radius" | bc`
+ printf "Area of circle with radius $radius is "
+ printf "%4.2f\n" $area
+ printf "circumference of circle with "
+ printf "radius $radius is "
+ printf "%4.2f\n" $circumference
+}
+# areacfn 5.5
+# output
+# Area of circle with radius 5.5 is 94.87
+# circumference of circle with radius 5.5 is 34.56
